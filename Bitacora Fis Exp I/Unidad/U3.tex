@@ -1,0 +1,72 @@
+\section{Unidad 3: Medición por 4 contactos}
+
+\subsection{Fuentes de error}
+\begin{enumerate}
+    \item % Pregunta 1
+    \textbf{Efecto triboeléctrico:} Las corrientes triboeléctricas son generadas por cargas creadas entre un conductor y un aislante debido a la fricción. Aquí, los electrones libres se desprenden del conductor y crean un desequilibrio de carga que provoca el flujo de corriente. 
+    
+    El cable de “bajo ruido” reduce en gran medida este efecto. Por lo general, utiliza un aislante interno de polietileno recubierto con grafito debajo del escudo externo. El grafito proporciona lubricación y un cilindro equipotencial conductor para igualar las cargas y minimizar la carga generada por los efectos de fricción del movimiento del cable. Sin embargo, incluso el cable de bajo ruido crea algo de ruido cuando se somete a vibración y expansión o contracción, por lo que todas las conexiones deben mantenerse cortas, alejadas de los cambios de temperatura (que crearían fuerzas de expansión térmica) y preferiblemente sujetadas con cinta adhesiva o atando el cable a un cable. una superficie que no vibre, como una pared, un banco u otra estructura rígida.
+
+      %pagina 66
+    \item % Pregunta 2
+    \textbf{Efecto piezoeléctrico:} Las corrientes piezoeléctricas se generan cuando se aplica tensión mecánica a ciertos materiales cristalinos.
+    
+    Para minimizar la corriente debida a este efecto, es importante eliminar las tensiones mecánicas del aislante y utilizar materiales aislantes con efectos mínimos de carga piezoeléctrica y almacenada.
+
+    
+    \item % Pregunta 3 
+    \textbf{Efecto electroquímico:} Este efecto se produce por productos químicos iónicos que crean baterías débiles entre dos conductores en una placa de circuito. La resistencia del aislamiento puede reducirse drásticamente por alta humedad o contaminación iónica. Las condiciones de alta humedad ocurren con condensación o absorción de agua; La contaminación iónica puede ser el resultado de aceites corporales, sales, fundente de soldadura o residuos de manufacturación. Aunque el resultado principal de estos contaminantes es la reducción de la resistencia del aislamiento, la combinación de alta humedad y contaminación iónica puede formar una ruta conductora o incluso pueden actuar como una celda electroquímica con alta resistencia en serie.
+    
+    Para evitar los efectos de la contaminación y la humedad, se debe seleccionar aisladores que resistan la absorción de agua y mantengan la humedad a niveles moderados. Además, se debe asegurar que todos los aisladores se mantengan limpios y libres de contaminación. Si los aisladores se contaminan, se debe aplicar un agente de limpieza como metanol a todos los circuitos de interconexión.
+
+
+    
+    \item % Pregunta 4
+    \textbf{Ruido de Johnson:} En una resistencia, la energía térmica produce el movimiento de partículas cargadas. Este movimiento de carga produce ruido (voltaje).
+    
+    Una forma de reducir el ruido es reduciendo la temperatura de la fuente. Enfriando la muestra desde temperatura ambiente alrededor de 293 K a la del nitrógeno líquido, 77 K, disminuye aproximadamente a la mitad el factor de ruido.
+    \item % Pregunta 5
+    \textbf{Efecto superficial en aisladores (superficie limpia):} Una superficie esta definida por un pequeño número de capas atómicas que delimitan dos materiales en contacto íntimo. Si la superficie está en vacío (limpia) la capa atómica exterior de la superficie da lugar a bandas electrónicas que pueden ser ocupadas por electrones libres, de este modo, al aplicar una diferencia de potencial, como la capa exterior ofrece menor resistencia, la corriente tenderá a transitar mayormente por ésta, y no por la sección transversal efectiva del material y al efectuar mediciones, no se estaría obteniendo la corriente que circula derechamente por el mismo, sino que la que circula por la capa exterior.
+    \item % Pregunta 6
+    \textbf{Efecto superficial (gases adsorbidos):} En el caso de superficies que no estén en el vacío, las capas externas tienden a adsorber gases, luego al aplicar una diferencia de potencial, la corriente a través de dichos gases producirá su ionización, lo que hará que al quitar el voltaje, generen una corriente que decae lentamente con el tiempo en el circuito. Para reducir esto, se debe en lo posible aplicar voltajes no elevados, para que así los gases no se ionizen y no produzcan este desbalance de carga.
+
+    
+    \item % Pregunta 7
+     La corriente de fuga es una corriente de error que fluye (fugas) a través de la resistencia de aislamiento cuando se aplica un voltaje.Generalmente se convierte en un problema cuando la impedancia del dispositivo bajo prueba es comparable a la de los aisladores en el circuito de prueba.Para reducir las corrientes de fuga, utilice aisladores de buena calidad, reduzca el nivel de humedad en el entorno de prueba y utilice protectores. El uso de aisladores de buena calidad al construir el circuito de prueba es una forma de reducir las corrientes de fuga.
+     
+     Los aisladores no son  perfectos, cada uno tiene distintas características. Como por ejemplo un aislador puede ser bueno en cuanto a minimizar el efecto piezoeléctrico pero malo minimizando el efecto triboeléctrico.
+     
+     \item % Pregunta 8
+    
+    \item % Pregunta 9 
+    \textbf{Efecto termoeléctrico:}
+    \begin{itemize}
+        \item Este efecto se origina por que los electrones se ven excitados a niveles energéticos de manera diferente dependiendo del material, provocando una diferencia de potencial en la unión de estos y, consecuentemente, creando una corriente de circuito.
+        \item El voltaje generado depende de los materiales y la diferencia de temperatura. De esta forma si se conocen los materiales se puede conocer la diferencia de temperatura. Bajo este principio funciona el medidor termopar, que consta de dos metales distintos unidos en un punto, este dispositivo es capaz de medir la diferencia de temperatura en los dos extremos.
+        \item Por este efecto, se pueden generar voltajes debido a las diferencias de temperatura entre diferentes partes de un circuito y cuando conductores hechos de materiales distintos se unen.
+        \item Para minimizar este efecto se recomienda construir los circuitos usando el mismo material para todos los conductores, mantener las conexiones libres de óxido y minimizar el gradiente de temperaturas poniendo los conductores cerca unos de otros y utilizando aislantes con alta conductividad térmica.
+    \end{itemize}
+
+    
+    \item % Pregunta 10
+    \textbf{Campo magnético:} Los campos magnéticos generan voltajes de error en dos circunstancias: 1) si el campo cambia con el tiempo y 2) si hay movimiento relativo entre el circuito y el campo.
+    
+    Para minimizar los voltajes magnéticos inducidos, se puede reducir el área del circuito los cables deben tender juntos y blindados magnéticamente y deben estar atados para minimizar el movimiento. El mu-metal, una aleación especial con alta permeabilidad a bajas densidades de flujo magnético y a bajas frecuencias, es un material de blindaje magnético de uso común.
+
+    
+    \item % Pregunta 11
+    \textbf{Lazos de tierra:}
+    es una corriente no deseada que circula a través de un conductor que une dos puntos, que en teoría tendrían que estar al mismo potencial pero que en realidad no lo están. se forman cuando se conectan varios instrumentos juntos a una sola señal de retorno, como por ejemplo un solo cable a tierra. Una pequeña diferencia de potencial puede existir entre distintos puntos causando así un flujo de corriente.
+    
+    Para evitar esto suele utilizarse lo que se conoce como tierra en un solo punto consistente en fijar a tierra la malla de sólo uno de los extremos del cable de la señal de medida. También se puede evitar utilizando voltímetros con alta impedancia de modo común.
+    
+    \item % Pregunta 12
+    \textbf{Capacidades parasitarias:}
+    \begin{itemize}
+        \item Es un dispositivo capaz de almacenar carga eléctrica y energía en forma de campo eléctrico. Consiste en dos superficies conductoras separadas por un medio dieléctrico.
+        \item El cuerpo humano si es un condensador, ya que almacena cargas eléctricas.
+        \item Es una capacidad que deliberadamente forma parte de un circuito. Es decir que es parte esencial del mismo.
+        \item Es una capacidad que surge por las imperfecciones en la elaboración de un circuito. Por ejemplo, dos conductores pueden estar muy cerca y sin querer formar una capacitancia parásita.
+        \item La impedancia de un condensador esta dada por la expresión $Z=\frac{1}{\omega C}$
+    \end{itemize}
+\end{enumerate}
