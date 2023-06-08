@@ -1,0 +1,372 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 2}
+\def\temaatratar {Condensadores}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+	Un condensador o capacitor es un elemento que puede almacenar carga eléctrica, la capacidad que tiene para almacenar esta carga depende del material y de su geometría.\\\\ Durante el transcurso de este informe se verá como a través de las actividades realizadas en el laboratorio se implementa el uso de capacitores en distintos circuitos sencillos con el objetivo de entender el concepto de asociación de condensadores y estudiar la evolución del voltaje cuando ocurre el proceso de carga y descarga de estos. Para lograr esto, se realizan bosquejos de circuitos utilizando tres condensadores dispuestos de formas distintas en cada uno de los esquemas y además se calculan las capacidades equivalentes y sus errores respectivos aplicando asociación de condensadores.\\Luego se monta otro circuito y se realizan gráficos que ilustran el comportamiento de magnitudes sobre el condensador en función del tiempo y se comenta cómo varía si se cambian parámetros como el valor del capacitor.\\ Por último, se configura otro circuito simple (considerado un circuito RC) que consiste de una resistencia y dos capacitores para el cual también se elaboran gráficos del comportamiento en función del tiempo para poder analizar lo que ocurre en sus componentes, finalmente se comenta que ocurre al variar los parámetros de uno de sus condensadores para generar una idea de sobre como influye en las otras magnitudes del circuito.\\\\
+	Finalmente se concluye acerca de la efectiva veracidad del modelamiento de las propiedades de un condensador a través de expresiones provenientes de las leyes de Ohm y de Kirchhoff, se internaliza también el concepto de asociación de condensadores y se ve la incidencia del valor de capacitancia de un condensador al descargarse con respecto al comportamiento de un circuito RC.
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+
+%ENUMERACIÓN DE TABLAS
+\setbeamertemplate{caption}[numbered]
+
+% COMANDOS PROPIOS
+% test %
+\newcommand{\avg}[1]{\langle #1 \rangle}
+%%%%%%%%
+
+
+
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Metodología}
+\subsection{Primera experiencia: Asociación de condensadores}
+Para la primera actividad de la primera experiencia se deben escoger capacitancias para tres condensadores distintos que se utilizarán para diseñar un esquema en las siguientes actividades de la experiencia. Los valores escogidos para esta iteración serán $4.7\mu F$, $5.6\mu F$ y $10\mu F$. \\
+Para realizar estos bocetos se utiliza LTspice para plantear los circuitos. El primer sistema para el que se pide realizar un esquema es uno donde se deben implementar los tres condensadores escogidos en paralelo con sus respectivos valores.\\
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/figura 1.png}
+    \caption{Tres condensadores en paralelo.}
+    \label{fig:condensadores_enparalelo}
+\end{figure}
+\\
+Luego, la siguiente configuración corresponde a los tres condensadores implementados en serie.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/figura 2.png}
+    \caption{Tres condensadores en serie.}
+    \label{fig:condensadores_enserie}
+\end{figure}
+\\
+Posteriormente, se representa la situación donde dos de los condensadores se implementan en serie y uno en paralelo.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.4\textwidth]{Laboratorio 2/figura 3.png}
+    \caption{Dos condensadores en serie y uno en paralelo.}
+    \label{fig:condensadores_2enserie_1enparalelo}
+\end{figure}
+\\
+Finalmente, se bosqueja el ajuste donde se implementan dos en paralelo y uno en serie.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/figura 4.png}
+    \caption{Dos condensadores en paralelo y uno en serie.}
+    \label{fig:condensadores_2enparalelo_1enserie}
+\end{figure}
+
+En la siguiente actividad se determina el error asociado al cálculo de la capacitancia equivalente de cada uno de los circuitos mostrados previamente. Para calcular la capacitancia equivalente se tienen las siguientes expresiones:\\
+\begin{enumerate}
+    \item Capacitancia de n condensadores en serie \\
+$$ \frac{1}{C_T} = \sum_{i=1}^{n} \frac{1}{C_i} $$
+    \item Capacitancia de n condensadores en paralelo \\
+$$ C_{T} = \sum_{i=1}^{n} C_i $$ 
+\end{enumerate}
+\\
+Utilizando las dos expresiones mencionadas anteriormente se puede calcular la capacitancia total del circuito y utilizando las expresiones de propagación de errores también se puede determinar el error de medición en cada caso.\\
+
+\begin{enumerate}
+    \item Error de una suma ($c = a + b$)
+    
+    $$ c = \avg{c} \pm \Delta c = (\avg{a} + \avg{b}) \pm \sqrt{ (\Delta a)^2 + (\Delta b)^2 }$$ \\
+    
+    \item Error de una resta ($c = a - b$)
+    
+    $$c = \avg{c} \pm \Delta c = (\avg{a} - \avg{b}) \pm \sqrt{(\Delta a)^2 + (\Delta b)^2 }$$\\
+
+    \item Error de un producto ($c = ab$)
+
+    $$c = \avg{c} \pm \Delta c = (\avg{a} \avg{b}) \sqrt{ \left(\frac{\Delta a}{\avg{a}}\right)^2 + \left(\frac{\Delta b}{\avg{b}}\right)^2 }  $$ \\
+
+    \item Error de una división ($c = a/b$)
+
+    $$c = \avg{c} \pm \Delta c = \frac{\avg{a}}{\avg{b}} \pm \frac{\avg{a}}{\avg{b}} \sqrt{ \left(\frac{\Delta a}{\avg{a}}\right)^2 + \left( \frac{\Delta b}{\avg{b}} \right) ^2 } $$
+
+\end{enumerate}
+%% AGREGAR AQUÍ, LAS FÓRMULAS UTILIZADAS DE PROPAGACIÓN DE ERRORES %%
+
+
+
+
+\subsection{Segunda experiencia: carga de un condensador}
+Para la segunda experiencia se comienza con armar en LTspice el circuito eléctrico de la figura 5, donde $R_1=1M\Omega, C=10\mu F$ y $V = 12V$.\\
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.45\textwidth]{Laboratorio 2/figura 5.jpg}
+    \caption{Circuito eléctrico compuesto por una fuente de poder, una resistencia y un condensador. Representados por V1, R1 y C1  respectivamente.}
+    \label{fig:mati_porfavor_basta}
+\end{figure}
+En la segunda parte con la utilización de la herramienta de simulación de LTspice se registran las curvas de voltaje para la resistencia y el condensador, se registran los valores hasta un tiempo final de 60 segundos.
+
+Finalmente se gráfica la corriente y el voltaje sobre el condensador en función del tiempo.
+
+
+\subsection{Tercera experiencia: Estudio de un circuito RC}
+En la tercera y última experiencia se arma el esquema de un circuito en LTspice como se muestra en la figura \ref{fig:experiencia3esquema}, donde $R_1=1M\OMega$, $C_1=1\mu F$, $C_2=4.7\mu F$ y $V=12V$.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/esquema_resistenciaycondensador.png}
+    \caption{Circuito eléctrico compuesto por una fuente de poder, una resistencia y un condensador. Representados por V, R, $C_{1}$ y $C_{2}$ respectivamente.}
+    \label{fig:experiencia3esquema}
+\end{figure}
+Se procede a medir el Voltaje a través de la asociación de condensadores en función del tiempo en un intervalo de 60 segundos.
+
+La medición del voltaje se realiza de la siguiente forma:
+\begin{itemize}
+    \item En $t=0$ se conecta la alimentación%simplemnte increible, se conecta
+    \item En $t=30$ se desconecta uno de los cables que van hacia la alimentación de modo que se obtienen dos simulaciones distintas, una respecto al proceso de carga del circuito y otra con la descarga en ausencia de fuente. (En LTspice se puede simular el comportamiento de desconectar la fuente dandole valores de condición inicial a los componentes del circuito, en este caso se le asigna al condensador un voltaje inicial de $12 [V]$)
+\end{itemize}{}\\
+
+En la actividad siguiente se configura el circuito y se hacen mediciones en el condensador para medir su voltaje y en la resistencia para obtener la intensidad de corriente y la disipación de potencia. Con los datos obtenidos en estas mediciones se procede a elaborar gráficos que ilustren la evolución de estas cantidades en función del tiempo transcurrido durante el proceso, como se trata de dos simulaciones distintas es necesario hacer un ajuste en el tiempo de la segunda simulación de cada uno, en particular, una traslación en las marcas de tiempo ($t_{real} = t+30$).\\
+\\
+Para elaborar los gráficos se puede utilizar la librería $matplotlib$ de código abierto en Python o también software como Excel, MATLAB u Octave. Los gráficos que se muestran a continuación se realizan utilizando $matplotlib$. % NO AGREGAR MÁS TEXTO PORFA
+
+% PROTEGIDO POR NEWPAGE PARA QUE NO SE DESCOMPAGINEN LAS FIGURITAS
+\newpage
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/VoltajeEnCondensador.png}
+    \caption{Voltaje en el condensador $C1$}
+    \label{fig:voltaje_C1}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/corrienteEnLaResistencia.png}
+    \caption{Corriente en la resistencia $R$}
+    \label{fig:intensidad_R}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorio 2/disipacionpotenciaresistencia.png}
+    \caption{Disipación de potencia en la resistencia $R$}
+    \label{fig:disipación_R}
+\end{figure}
+\newpage
+% PROTEGIDO POR NEWPAGE PARA QUE NO SE DESCOMPAGINEN LAS FIGURITAS
+
+
+
+\section{Resultados}
+\subsection{Primera experiencia: Asociación de condensadores}
+Los errores asociados al cálculo de cada una de las capacitancias equivalentes:\\
+\begin{center}
+\begin{table}
+\begin{tabular}{|c|c|c|}
+    \hline
+     \hspace & C_{eq} $[\mu F]$  & \Delta C_{eq} $[\mu F]$ \\ \hline
+     Fig. \ref{fig:condensadores_enparalelo} & $$ 20.3 $$ & $$ 0.123\ $$ \\ \hline
+     Fig. \ref{fig:condensadores_enserie} & $$ 2.035 $$ & $$ 0.019 $$ \\
+     \hline
+     Fig. \ref{fig:condensadores_2enserie_1enparalelo} & $$ 12.556 $$ & $$ 0.101 $$ \\ \hline
+     Fig. \ref{fig:condensadores_2enparalelo_1enserie} & $$ 5.074 $$ & $$ 0.031 $$ \\ \hline
+     
+\end{tabular}
+\caption{Errores de medición de la capacitancia equivalente para cada una de las figuras}
+\label{tabla:errores}
+\end{table}
+
+\end{center}
+\subsection{Segunda experiencia: carga de un condensador}
+La figura \ref{fig:a}, presenta las curvas de voltaje de la resistencia y condensador.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorio 2/grafico voltaje de la resistencia y condensador.png}
+    \caption{Gráfico de voltaje en función del tiempo, $V(N001,N002)$ y $V(n002)$   representan el voltaje de la resistencia y condensador respectivamente.}
+    \label{fig:a}
+\end{figure}
+Las figuras \ref{fig:b} y \ref{fig:c} representan representan respectivamente los gráficos de voltaje y corriente del condensador en función del tiempo.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorio 2/grafico voltaje del condensador.png}
+    \caption{Gráfico de voltaje,$V(n002)$, en función del tiempo.}
+    \label{fig:b}
+\end{figure}
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorio 2/grafico corriente del condensador.png}
+    \caption{Gráfico de la corriente,$I(C1)$ en función del tiempo.}
+    \label{fig:c}
+\end{figure}
+
+
+\newpage
+\section{Análisis}
+
+
+\subsection{Primera experiencia: Asociación de condensadores}
+
+En la tabla \ref{tabla:errores} se puede apreciar una tendencia porcentual del error respecto a la capacitancia equivalente, sin embargo, no es significativa.
+
+\subsection{Segunda experiencia: Carga de un condensador}
+
+Del gráfico de la figura \ref{fig:a} se observa que la suma de los voltajes medido en la resistencia y condensador del circuito, en cualquier tiempo entre 0 y 60 segundos, es $12 V$. \\
+
+También se tiene que el voltaje medido sobre la resistencia decrece de manera exponencial, partiendo con un valor de $12 V$ y terminando en $0 V$, mientras que la corriente medida del condensador, como también se observa en el gráfico de la figura \ref{fig:b}, crece de manera logarítmica, partiendo con un valor de $0 V$ y terminando en $0 V$.\\
+
+La corriente medida del condensador, como se observa en el gráfico de la figura \ref{fig:c}, decrece de manera logarítmica, partiendo con un valor de $12[\mu A]$ y terminando en $0[\mu A]$.
+
+\subsection{Tercera experiencia: Estudio de un circuito RC}
+En la figura \ref{fig:voltaje_C1} se puede contemplar un comportamiento constante que a partir de un punto decae de forma exponencial.\\
+En la figura \ref{fig:intensidad_R} y \ref{fig:disipación_R} también se puede encontrar un comportamiento análogamente similar al de la figura \ref{fig:voltaje_C1} pero cada uno con escalas distintas.
+
+
+\newpage
+\section{Discusión}
+\subsection{Primera experiencia: Asociación de condensadores}
+%SKEREEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEe 
+El error de medición para la asociación de condensadores es relativamente pequeña dada la naturaleza porcentual del error que se encuentra en la tolerancia de cada uno de los capacitores, a partir de eso se considera que la medición es confiable.\\\\
+Una observación que puede parecer un poco evidente pero que puede llegar a ser significativa cuando se utilicen capacitores con mayor capacidad es que el error asociado a cada uno incrementa con su valor (ya que la tolerancia es porcentual) y debido a la naturaleza de las expresiones que modelan la asociación de estos influirá en la incertidumbre final la disposición en la que se coloquen en un circuito.
+
+\subsection{Segunda experiencia: Carga de un condensador}
+De esta experiencia se puede observar, en el gráfico de la figura
+\ref{fig:a}, como el decrecimiento y crecimiento de los voltajes medidos de la resistencia y condensador ocurren de tal forma que la suma de estos voltajes es siempre $12 V$, es decir el valor de la fuente. Por lo que se puede decir que en este caso la ley de los voltajes de Kirchhoff se cumple de forma satisfactoria.\\
+
+Respecto al voltaje medido del condensador, gráfico de la figura \ref{fig:b} , se observa que este se encuentra en un estado transitorio entre los 0 y 60 segundos que dura el experimento. En $t=60~s$  el condensador obtiene toda la carga que existe en el circuito, debido que a que el voltaje medido en este instante es $12 V$, es decir, el voltaje entregado por la fuente. Por lo tanto, en $t=60~s$  el condensador pasa a un estado estacionario. 
+
+Así la carga almacenada dada la ecuación $Q=CV$, es $120~C$.\\
+
+Del gráfico de la figura \ref{fig:c}, se observa como la intensidad de la corriente que pasa por el condensador disminuye hasta llegar a no pasar corriente, debido a que entra a su estado estacionario en $t=60~s$.
+
+El voltaje del condensador se puede describir de la forma:
+$$V_c=V_f(1-e^{\frac{-t}{RC}})$$
+Mientras que la corriente del condensador se puede describir con la expresión:
+
+$$I(t)=\frac{V_{f}}{R}e^{\frac{-t}{RC}}$$
+Donde $v_c$ es el voltaje del condensador y $V_f$ el voltaje de la fuente.
+Así, si $t=5RC$ y $t=10RC$ los valores que tienden el voltaje y la corriente son:
+$$V_c=V_f(1-e^{\frac{-5RC}{RC}})\approx 0.99326 V_f$$
+$$V_c=V_f(1-e^{\frac{-5RC}{RC}})\approx 0.99995 V_f$$
+$$I(t)=\frac{V_{f}}{R}e^{\frac{-5RC}{RC}}\approx 6.73~nA$$
+$$I(t)=\frac{V_{f}}{R}e^{\frac{-10RC}{RC}}\approx 4.54\cdot 10^{-2}nA$$
+Es decir que los voltajes tienden a valores muy cercanos del voltaje de la fuente, por lo que la corriente en el circuito debería ser menos. Y esto se ve en los valores que tienen las intensidades al tender a números muy pequeños.\\ \\
+
+Si se cambiara el condensador por uno más pequeño, $ C=4.7F$, el tiempo que tomará para cargarse completamente será menos de la mitad que el anterior. Esto ya que si los vemos respecto a $\tau =RC$, el cual define el tiempo que se demora un condensador en cargarse en un circuito, con el primer condensador se demoraría un tiempo en cargarse de $\tau_1=10.000$ mientras que con el segundo condensador $\tau_2=4.700$, es decir menos de la mitad del tiempo anterior. Así las curvas de los gráficas estarían menos estiradas debido a que se demora menos en cargarse el condensador. \\ \\
+
+Si se cambia el voltaje de la fuente por $5~V$, el voltaje del condensador cambia proporcionalmente debido a la ecuación que los une: $$V_c=V_f(1-e^{\frac{-t}{RC}})$$. De esta forma el voltaje del condensador disminuye. Por otro lado, a la corriente le ocurre lo mismo. Así las curvas en ambos gráficos se encurvan más debido a que se les multiplica por algo más pequeño.
+
+
+
+\subsection{Tercera experiencia: Estudio de un circuito RC}
+
+Los gráficos obtenidos corresponden a los resultados superpuestos de cada simulación por separado.\\\\Para el gráfico de la figura \ref{fig:voltaje_C1} el voltaje es constante $V=12$ hasta $t=30$, correspondiente a la fuente de poder conectada que propicia una diferencia de potencial. Luego en $t=30$ al desconectarse de la fuente, el voltaje comienza a decaer de forma exponencial lo que se condice con lo visto en clase ya que en un circuito RC, se puede obtener el voltaje de un condensador en función del tiempo mediante la expresión:
+\begin{equation}
+V = \frac{q(t)}{C} = V_0(1 - e^{-\frac{t}{RC}}) \label{eq:voltaje_segun_tiempo}   
+\end{equation}
+\\
+Para el gráfico de la figura \ref{fig:intensidad_R} que expresa la corriente en la resistencia, se puede notar que tras remover la fuente se ve nuevamente que la intensidad de corriente decae como una exponencial también. Usando nuevamente lo anterior se puede notar que tras desaparecer la fuente original, lo que le otorga al circuito una diferencia de potencial es la carga almacenada en el condensador, de esta manera, mientras ocurre la descarga se genera una diferencia de potencial variable en el circuito que está dada por el voltaje del condensador. Como se hace notar en (\ref{eq:voltaje_segun_tiempo}), este voltaje decae de forma exponencial y si se aplica la ley de Ohm se tiene:
+$$ I_{R}(t) = \frac{V(t)}{R} $$
+Donde el valor de la resistencia $R$ es constante y naturalmente se hereda el comportamiento de decaimiento exponencial.
+\\\\
+Para el gráfico de la figura \ref{fig:disipación_R} que representa la disipación de corriente en la resistencia la explicación es análoga pues esta magnitud se calcula sobre la resistencia mediante la expresión:
+$$ V_{R}I_{R}(t) $$
+Que sigue dependiendo de las cantidades anteriores.
+\\\\
+Si se reemplaza $C1$ por un capacitor de $4.7 [\mu F]$ la capacitancia equivalente decrece, dada por:
+$$ C_{eq} = C1 + C2 = 4.7[\mu F] + 4.7[\mu F] = 9.4 [\mu F] $$
+Lo que incide directamente en la capacidad de carga que se podrá almacenar, dada por $Q = CV$ implicará que el voltaje sobre el condensador, la intensidad sobre la resistencia decaerán más rápido y a su vez la disipación de energía también será menor pues habrá inferiores niveles de energía sobre el sistema. A niveles gráficos esto significará que la curva se trasladará hacia la izquierda debido tanto gracias a que tomará menos tiempo cargar el condensador y también tomará menos tiempo descargarlo una vez removida la fuente. 
+\newpage
+\section{Conclusión}
+Durante esta iteración del laboratorio se adquirió una noción sobre el funcionamiento y la implementación de capacitores en circuitos sencillos, así como también el entendimiento del concepto de la asociación de capacitores en un circuito.\\\\
+
+Además, se pudo poner en análisis y efectivamente verificar experimentalmente el proceso de carga y descarga de un condensador mediante las expresiones que modelan la evolución de las magnitudes relacionadas al sistema en función del tiempo.\\\\
+
+Adicionalmente, también se hizo notar como influye disminuir la capacitancia de los condensadores que se encuentran en el circuito, viendo así como inciden en otras características de comportamiento del sistema tales como el decaimiento de la diferencia de potencial , la capacidad de carga máxima o la intensidad eléctrica del circuito.\\\\
+
+Por otra parte, se mostró como modificar los parámetros y condiciones iniciales de algunos de los elementos de las simulaciones hechas en el software LTspice, lo que permite generar nuevas situaciones como emular experimentos donde a partir de cierto punto se hacen cambios al sistema como en el caso de esta ocasión fue el desconectar la fuente de poder luego de transcurridos $30$ segundos. \\\\
+
+% FIN DEL DOCUMENTO
+
+\end{document}  
+
+      
+
+
+

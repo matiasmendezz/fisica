@@ -1,0 +1,219 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 1}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	RUT:
+	& \begin{tabular}[t]{l}
+		20.243.742-7
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{} \\
+	\multicolumn{2}{l}{Fecha de entrega: 26 de octubre de 2020} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Introducción}
+En el presente informe se muestra el desarrollo hecho para la Tarea 1 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. El objetivo de esta tarea es resolver numéricamente la ecuación:
+$$ $$
+$$ p(x<a)=0.95 = \int^{a}_{-\infty} pdf(x)dx $$
+Para esto se considera que $pdf$ es una distribución $\chi^2$:
+$$pdf(x)=\chi^2(x)=\frac{1}{2^{k/2} \Gamma(k/2)}x^{\frac{k}{2}-1 }e^{\frac{-x}{2}} $$
+donde $\Gamma$ es la función Gamma:
+$$\Gamma(z)=\int^{\infty}_0 x^{z-1}e^{-x}dx$$
+En la distribución $\chi^2$, $k$ corresponde a 4.742 para esta tarea.
+
+\section{Desarrollo}
+
+Se debe considerar que la distribución $\chi^2$ está definida en $\mathbb{R}^+$ solamente. Por lo que la ecuación a resolver se reescribe como:
+$$p(x<a)=0.95 = \int^{a}_{0} pdf(x)dx $$
+
+Primero se debe encontrar un valor para $\Gamma(k/2)$, por lo que se crea la función \textbf{gamma\_1} que mediante un algoritmo calcula $\Gamma(z)$ para cualquier real positivo. Esta función  recibe x como parámetro, el intervalo donde se integra, y N, que corresponde a la cantidad de segmentos en que se divide el intervalo.
+\begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{gamma sin c.v..pdf}
+\caption{El área pintada debajo de la curva corresponde a $\Gamma(k/2)$. Se trata de calcular esta área a través del método del trapecio, pero primero se debe realizar un cambio de variable para regularizar la curva ya que se tiene un límite que infinito.}
+    \label{Funcion gamma sin c.v.}
+\centering
+\end{figure}
+Así, se tiene que regularizar
+
+la curva de la función gamma pues esta tiene un límite infinito, esta no es una curva suave como se observa en la figura \ref{Funcion gamma sin c.v.}, por lo que se usa el cambio de variable $y=e^x$ en la integral de forma que esta queda:
+
+$$\Gamma(z)=\int^1_0 ln\begin{pmatrix}
+\frac{1}{y}
+\end{pmatrix}^{z-1}dy$$
+
+ Para integrar $\Gamma(z)$ se utiliza el método del trapecio, se  integra en el intervalo (0,1) y se divide este en N segmentos. La gracia de este cambio da variable es que la función a integrar es más suave como se observa en la figura \ref{Funcion gamma con c.v.}.
+\begin{figure}[h]
+\includegraphics[width=0.4\textwidth]{gamma con c.v..pdf}
+\caption{El área pintada bajo la curva corresponde a $\Gamma(k/2)$luego del cambio de variable. Esta curva ya está regularizada, pero ahora se tiene que esta se indefinida en $x=0$, por lo que se trata de arreglar esto aproximando el 0 a $10^{-10}$. Para luego usar el método del trapecio para calcular el área bajo la curva.}
+    \label{Funcion gamma con c.v.}
+\centering
+\end{figure}
+ Luego, para mejorar la precisión numérica de la integral usamos la función \textbf{precision\_gamma}, un algoritmo que recibe la función, z, el N con que se parte y la tolerancia, como parámetros. Y usa la convergencia relativa para encontrar la mejor aproximación numérica de la integral. Si denotamos $I_N$ como la integral numérica para N segmentos en el método del trapecio, tenemos que la función busca cumplir:
+ $$ \begin{vmatrix}
+\frac{I_{2N}-I_N}{I_n}
+\end{vmatrix}
+<\epsilon$$
+ Para esta tarea se busca solamente el resultado numérico para $\epsilon=10^-6$, ya que se considera estudiar más la integral principal, $\int^a_0pdf(x)dx$.
+ \\ \\
+ Teniendo en cuenta la precisión numérica de $\Gamma(k/2)$, se procede a calcular la función 
+ $$f(a)=\int^a_{0}\frac{1}{2^{k/2} \Gamma(k/2)}x^{\frac{k}{2}-1 }e^{\frac{-x}{2}}dx $$
+ Para integrar numéricamente esta función se procede igual que antes, se usa el método del trapecio en la función \textbf{f}, y para mejorar su precisión numérica se utiliza la función \textbf{precision\_f}. Estas funciones funcionan de manera análoga a las anteriores.
+ 
+ Así, para resolver $f(a)=0.95$ se define
+ $$g(x)=f(x)-0.95$$
+ De esta forma, la raíz de g(x) es la solución para la ecuación. Y así. podemos ocupar el método de la \textbf{bisección} en g(x) para encontrar la raíz numéricamente. Para ello se necesita como parámetro un intervalo que encierre la solución, y una tolerancia para la precisión de la solución numérica; así se busca en el gráfico de g(x) de la figura \ref{grafico g(x)} un intervalo.
+ 
+ \begin{figure}[h]
+\includegraphics[width=0.5\textwidth]{grafico g(x).pdf}
+\caption{Del gráfico de g(x) se observa que la raíz esta encerrada entre 7.5 y 12.5, por lo que para el método de la bisección podemos usar el intervalo (7.5, 12.5) para comenzar a buscar la raíz.}
+    \label{grafico g(x)}
+\centering
+\end{figure}
+ Se usa el método de la bisección por su sencillez para implementarla, y por asegurar la convergencia al tener que los extremos evaluados del intervalo tienen signos distintos. 
+ 
+ 
+ \section{Resultados}
+ Para comparar los resultados se calculó también $\Gamma(k/2)$ y $a$ usando la librería scipy, implementándose así los métodos del trapecio y bisección, junto a las funciones gamma y $\chi^2$.\\
+ A continuación se ven algunas tablas para los valores calculados.
+ \begin{table}
+ \caption{Se muestran comparaciones para distintos valores evaluados en la función gamma creada y la función gamma de scipy.}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{z} & \textbf{$\Gamma(z)$ calculado} & \textbf{$\Gamma(z)$ scipy} \\ \hline
+1          & 0.9999999999000001          & 1.0                     \\ \hline
+2          & 1.0000002510990291          & 1.0                     \\ \hline
+k/2=2.371  & 1.2191370224729854          & 1.2191365664602392      \\ \hline
+3          & 2.0000007754838287          & 2.0                     \\ \hline
+4          & 6.000000848546728           & 6.0                     \\ \hline
+\end{tabular}
+\end{table}
+
+ \begin{table}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{$a$ calculado}          & \textbf{Convergencia} & \textbf{Tiempo de ejecución {[}ms{]}} \\ \hline
+10.668931007385254 & $10^{-5}$          & 7383                                  \\ \hline
+10.668907165527344 & $10^{-4}$          & 7087                                  \\ \hline
+10.66864013671875  & $10^{-3}$          & 6663                                  \\ \hline
+10.6689453125      & $10^{-2}$          & 6497                                  \\ \hline
+\end{tabular}
+\caption{Se muestra la estimación de $a$ para distintas convergencia junto a su tiempo de ejecución}
+\end{table}
+
+\begin{table}
+\begin{tabular}{|l|l|}
+\hline
+\textbf{$a$ scipy} & \textbf{Precisión}            \\ \hline
+10.66889796798364  & $10^{-12}$ \\ \hline
+10.668897967981366 & $10^{-11}$                    \\ \hline
+10.668897967908606 & $10^{-10}$                    \\ \hline
+10.668897965982751 & $10^{-9}$                     \\ \hline
+\end{tabular}
+\caption{Se muestra la estimación de $a$ para distintas ´convergencias usando los algoritmos de la librería scipy.}
+\end{table}
+Finalmente se muestra un gráfico de $g(x)$ junto a las raíces numéricas calculadas.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.6\textwidth]{grafico g(x) con raices numericas con zoom.pdf}
+    \caption{Para la función $g(x)$, se observan las raíces numéricas calculadas para distintas convergencias relativas usando el método de la bisección.}
+    \label{grafico de g con raices y zoom}
+\end{figure}{}
+\newpage
+\section{Discusión y Conclusiones}
+
+Respecto a la función Gamma calculada, el cambio de variable realizado no logra resolver el límite infinito en total, pero logra suavizar la curva. En la tabla 1 se observa que la función tiene una precisión de 5 decimales comparada con la función Gamma de scipy, por lo que es bastante buena esta aproximación para lo que buscamos. \\ \\
+Sobre la solución encontrada, se tiene que la precisión de esta va relacionada al método del trapecio aplicado a $f(x)$, y al método de la bisección usado para encontrar la solución sobre ella. Así, junto a la tabla 2 y la figura 4, se observa que la solución numérica comienza a fallar respecto a la precisión luego de los 3 decimales. Ya que en el gráfico se observa que la solución $a$ con una convergencia de $10^{-2}$ esta más cerca de la solución real que $a$ con una convergencia de $10^{5}$. Esto se puede deber a las tolerancias usadas para los métodos implementados.
+\\ \\
+Las soluciones numéricas de $a$ utilizando los métodos de scipy muestra que coinciden en los primeros tres decimales con los $a$ calculados.
+\\ \\
+Sobre los tiempos de ejecuciones para las distintas precisiones de $a$ se tuvo que el algoritmo no presentó una gran diferencia de tiempo para distintas convergencias. \\ \\
+Finalmente, con todo esto se logró implementar una solución para la ecuación, que por lo analizado obtuvo una precisión de 3 decimales.
+
+  %he trapezoidal rule has faster convergence in general than Simpson's rule
+%justificar porque se utiliza el metodo del trapecio, cual es su ventaja
+%Seguir luego con explicar el uso de la funcion precision_gamma. Esta da una convergencia relativa que servira despues para los resultados.
+%Graficar la funcion gamma con y sin el cambio de variable. O tal vez no
+%Luego sigue explicar la integracion de chi, es igual que el de gamma
+%y luego explicar el metodo de la biseccion y sus ventajas.
+%MOstrar grafico donde se encuentra el cero
+%Ver el tema de las iteraciones y el tiempo
+%Comparar con los metodos de las librerias
+%EL CAMBIO DE VARIABLE NO RESULTA TAN SUAVE PERO AL MENOS ES MEJOR QUE %LA OTRA CURVA
+% FIN DEL DOCUMENTO
+\end{document}
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.6\textwidth]{}
+    \caption{}
+    \label
+\end{figure}{}

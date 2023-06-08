@@ -1,0 +1,294 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 5}
+\def\temaatratar {Análisis de Fourier}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+\usepackage{hyperref}
+\usepackage{listings}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+
+Como miembros activos de la sociedad científica constantemente nos encontramos estudiando fenómenos a nuestro alrededor a través de la medición y cuantificación. Para el rol de la ingeniería es fundamental contar con la ayuda de herramientas e instrumentos que permitan realizar estas mediciones de forma eficiente y práctica, por lo mismo, a la hora de trabajar con las mediciones obtenidas juegan un papel muy importante en la actualidad el análisis de resultados. Es ahí donde aparece una de las principales motivaciones de esta experiencia de laboratorio: trabajar con el concepto del \textit{Análisis de Fourier}.\\ \\
+El análisis de Fourier es un área de las matemáticas que estudia las funciones o \textbf{señales} periódicas a través de la descomposición de estas en múltiples funciones armónicas o de ondas que se superponen. Tiene un montón de aplicaciones en la ciencia, una de ella es que permite analizar las señales que se registran en diversos aparatos de medida. \\ \\ 
+A través de esta experiencia de laboratorio se logra familiarizar con el uso de $Phyphox$, un software desarrollado en el \href{https://es.wikipedia.org/wiki/Universidad_T\%C3\%A9cnica_de_Aquisgr\%C3\%A1n}{Segundo Instituto de Física de la Universidad Técnica de Aquisgrán, Alemania} que permite realizar diversos experimentos utilizando los sensores de un dispositivo móvil \textit{(Smartphones, tablets)} y que en el contexto de esta experiencia de laboratorio consiste en causar perturbaciones materiales a un vaso de vidrio y además, en conjunto al uso del análisis del \textit{Espectro de Fourier} visto en clases, estudiar las frecuencias de las vibraciones acústicas que se producen a causa de los golpes al vaso. \\ \\
+
+
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Metodología}
+\subsection{Frecuencias de oscilación de una barra}
+
+En la primera actividad de esta experiencia se provee una expresión que determina las frecuencias de los modos longitudinales para una barra delgada. Se indican tres barras de duraluminio que tienen una misma densidad conocida ($\rho \approx 2700 [kg/m^3]$) y también un mismo módulo de Young conocido ($E \approx 69 [GPa]$) pero cada una tiene una longitud distinta, se suponen de longitudes $60 [cm]$, $120 [cm]$ y $150 [cm]$ respectivamente.\\
+$$ f_n = \sqrt{\frac{E}{\rho}} \frac{n}{2L} $$
+\\
+
+Utilizando dicha expresión y los datos entregados se puede estimar la frecuencia del modo longitudinal fundamental \textit{(siendo este cuando $n=1$)} de cada una de las barras hipotéticas. \\
+
+Para la segunda actividad de esta experiencia se utilizan los espectros de Fourier que se proveen sobre dichas barras para verificar las frecuencias de los modos longitudinales, usando que en el espectro de Fourier el peak representa la frecuencia del modo.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Laboratorios/Laboratorio 5/fspect_barras.png}
+    \caption{Espectros de Fourier obtenidos mediante la técnica de impulsión en una barra de $60[cm]$ de longitud (arriba), $120[cm]$ (al medio) y $150 [cm]$ (abajo).}
+    \label{FSpectrum_barras}
+\end{figure}
+%% compaginación pa q se vea más bonito
+\newpage
+
+\subsection{Espectro de Fourier de un vaso vacío}
+
+Para esta experiencia se analizará el Espectro de Fourier asociado a las vibraciones acústicas causadas por la perturbación material a un vaso de vidrio. Se debe hacer uso de la aplicación \href{https://phyphox.org/}{Phyphox} que permite realizar experimentos y mediciones utilizando un smartphone o una tableta. \\
+\begin{center}
+\includegraphics[width=0.6\textwidth]{Laboratorios/Laboratorio 5/phyphox_logo.png}
+\end{center}
+ 
+En la primera actividad se debe utilizar el experimento \textbf{\textit{Espectro de audio}} de $Phyphox$ para realizar una grabación y analizar su frecuencia, para esto se debe ingresar al modo \textit{Datos sin procesar} y presionar el botón \textit{Play} para comenzar la grabación. Al golpear el vaso se deben apreciar cambios en la amplitud de la señal acústica. \\ \\
+En la siguiente actividad se debe seleccionar el modo \textit{Espectro} e ingresar al gráfico, nuevamente se repite el golpe al vaso para observar los cambios en el espectro. \\ \\
+En la tercera actividad se utiliza el modo \textit{Historia} y se vuelve a repetir el experimento, generando un mapa de color que representa la amplitud del espectro en función del tiempo. Es conveniente dar golpes repetidos para poder visualizar bien los peaks de las frecuencias que aparecerán como líneas blancas verticales en el mapa de color, además aparecerá un gráfico más abajo donde se verán puntos que representan la frecuencia del peak más alto en cada instante de tiempo.  \\ \\
+En la actividad siguiente se debe seleccionar el gráfico obtenido y luego escoger \textit{Seleccionar datos} para poder obtener las frecuencias de los peaks y confeccionar una tabla. \\ \\
+Para la actividad \textit{(g)} se debe obtener la información de los datos, así se debe repetir el experimento golpeando el vaso repetidas veces durante la grabación hasta que se forme un mapa de color donde se puedan distinguir bien las líneas de las frecuencias de oscilación. En el botón de opciones de la Action bar \textit{(barra superior de la interfaz)} de la aplicación se debe seleccionar \textit{Exportar Datos}. Se puede escoger el formato en el que $Phyphox$ entregará los datos, es preferible usar \textit{.csv} ya que muchos de los softwares que se han utilizado para trabajar en previas experiencias de laboratorio tienen opciones nativas para procesarlo. \\ \\
+En la actividad final de esta experiencia utilizando la información obtenida de la actividad anterior al exportar los datos se debe confeccionar un gráfico de la señal acústica en función del tiempo y uno de un espectro de Fourier. Una forma rápida de hacerlo es mediante las librerías \href{https://pandas.pydata.org/}{pandas} y \href{https://matplotlib.org/}{matplotlib} en \textit{Python}. \\ \\
+Con el fin de ayudar a replicar este experimento se adjunta un pequeño código base de lo que se puede utilizar para graficar rápidamente a partir del archivo \textit{.csv} utilizando $pandas$ que se encuentra disponible rápidamente por ejemplo en \href{https://colab.research.google.com/}{Google Colaboratory}.
+\begin{lstlisting}[language=Python]
+import pandas as pd
+import matplotlib.pyplot as plt
+# Nombre del csv con datos
+archivo = "Raw data.csv"
+
+# Se hace un dataframe con el archivo
+datos = pd.read_csv(archivo)
+
+fig, ax = plt.subplots(facecolor='white')
+datos.plot(0,1,ax=ax)
+ax.set_title("Amplitud de la señal acústica en función del tiempo")
+ax.set_facecolor('white')
+ax.set_xlabel("Tiempo [s]")
+ax.set_ylabel("Amplitud [a.u.]")
+
+\end{lstlisting}
+
+\subsection{Variación de las frecuencias de oscilación del vaso con agua }
+
+Para la primera actividad de esta experiencia se repite el experimento de las experiencias \textit{(c)} y \textit{(d)} donde se miden las frecuencias de los modos de oscilación del vaso excepto que ahora el vaso debe contener agua en su interior y solo se interesará encontrar uno de los modos. Se debe observar que al hacer variar la cantidad de agua contenida en el vaso también variará la amplitud de los modos haciendo así que el peak dominante cambie también. \\ 
+
+En la segunda actividad de esta experiencia haciendo variar la cantidad de agua en el vaso, se mide la frecuencia de oscilación escogida pero en función de la altura del agua con respecto al fondo del vaso. Con los datos obtenidos en este experimento se debe realizar una tabla que relacione la frecuencia $f*$ obtenida con la altura $h$ del agua en el vaso. Utilizando dicha tabla se puede graficar $f*$ en función de $h$ para poder observar su comportamiento según el agua contenida en el. \\ \\
+Para la última experiencia se debe utilizar la expresión utilizada para las frecuencias de las barras en la primera experiencia y discutir cuál podría ser el rol del agua y su efecto en las distintas frecuencias de oscilación.
+
+\newpage \section{Resultados}
+\subsection{Frecuencias de oscilación de una barra}
+
+Se muestra la estimación de frecuencia del modo longitudinal ($n=1$) para cada barra:
+\begin{enumerate}
+    \item Para $L_1=0.6 [m]$:
+$f_1=\sqrt{\frac{E}{\rho }}\cdot \frac{n}{2L}=\sqrt{\frac{6.9\cdot 10^{10}[\frac{kg}{m\cdot s^2}]}{2700\cdot [\frac{kg}{m^3}]}}\cdot \frac{1}{2\cdot 0.6 [m]}=4.212 [kHz]$ 
+    \item Para $L_2=1.2[m]$:
+$f_1=\sqrt{\frac{E}{\rho }}\cdot \frac{n}{2L}=\sqrt{\frac{6.9\cdot 10^{10}[\frac{kg}{m\cdot s^2}]}{2700\cdot [\frac{kg}{m^3}]}}\cdot \frac{1}{2\cdot 1.2 [m]}=2.106 [kHz]$
+    \item 
+Para $L_3=1.5 [m]$:
+$f_1=\sqrt{\frac{E}{\rho }}\cdot \frac{n}{2L}=\sqrt{\frac{6.9\cdot 10^{10}[\frac{kg}{m\cdot s^2}]}{2700\cdot [\frac{kg}{m^3}]}}\cdot \frac{1}{2\cdot 1.5 [m]}=1.685 [kHz]$
+    
+\end{enumerate}
+
+En la tabla 1 se muestran las frecuencias de modo longitudinal encontradas en los espectros de Fourier para cada barra, comparadas con las frecuencias estimadas. 
+\begin{center}
+    
+
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Largo $L$ {[}m{]}} & \multicolumn{1}{l|}{\textbf{Frecuencia $f_1$ nominal {[}kHz{]}}} & \multicolumn{1}{l|}{\textbf{Frecuencia $f_1$ medida {[}kHz{]}}} \\ \hline
+0.6                        & 4.212                                                            & 4.125                                                           \\ \hline
+1.2                        & 2.106                                                            & 2.225                                                           \\ \hline
+1.5                        & 1.685                                                            & 1.7                                                             \\ \hline
+\end{tabular}
+\end{center}
+
+
+
+\subsection{Espectro de Fourier de un vaso vacío}
+Se muestra en el gráfico, de la figura \ref{grafico raw data}, la amplitud de la señal acústica a causa de un golpe a un vaso vacío, grabada mediante \textit{Phyphox}. 
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Laboratorios/Laboratorio 5/raw data.png}
+    \caption{ Amplitud de la señal acústica
+en función del tiempo medida por \textit{Phyphox}.}
+    \label{grafico raw data}
+\end{figure}
+En la figura \ref{FFT } se muestra el espectro de Fourier de la señal acústica grabada.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.6\textwidth]{Laboratorios/Laboratorio 5/FFT Spectrum.png}
+    \caption{Amplitud absoluta de la señal acústica en función de la frecuencia en el espectro de Fourier generada por \textit{Phyphox}.}
+    \label{FFT }
+\end{figure}
+\begin{center}
+
+En la tabla 2, se muestran las frecuencias de modo de oscilación del vaso vacío.
+\begin{tabular}{|c|c|c|}
+\hline
+                         & \textbf{Modo 1} & \textbf{Modo 2} \\ \hline
+\textbf{Frecuencia (Hz)} & 2437.5          & 4125            \\ \hline
+\end{tabular}
+\end{center}
+En la figura \ref{ohhh que calor que calor oe eo ooooooo} se muestra un mapa de color con la amplitud del espectro de Fourier en función del tiempo.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorios/Laboratorio 5/mapa calor.jpg}
+    \caption{Mapa de color con la amplitud del espectro de Fourier en función del tiempo generado por \textit{Phyphox}.}
+    \label{ohhh que calor que calor oe eo ooooooo}
+\end{figure}
+\subsection{Variación de las frecuencias de oscilación del vaso con agua }
+En la tabla 3 se muestra la frecuencia de oscilación medida por \textit{Phyphox} en función de la altura del agua al interior del vaso. 
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Altura $h$ {[}cm{]}} & \multicolumn{1}{l|}{\textbf{Frecuencia $f^*$ {[}Hz{]}}} \\ \hline
+1                            & 2437.5                                                  \\ \hline
+1.5                          & 2414.0625                                               \\ \hline
+2                            & 2390.63                                                 \\ \hline
+2.5                          & 2367.1875                                               \\ \hline
+3                            & 2343.75                                                 \\ \hline
+3.5                          & 2250                                                    \\ \hline
+4                            & 2179.69                                                 \\ \hline
+4.5                          & 2062.5                                                  \\ \hline
+5                            & 1968.75                                                 \\ \hline
+5.5                          & 1851.5625                                               \\ \hline
+6                            & 1734.375                                                \\ \hline
+\end{tabular}
+\end{center}
+\\
+En la figura \ref{tabla} se grafican los datos mostrados en la tabla 3.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorios/Laboratorio 5/grafico final.pdf}
+    \caption{Frecuencia del modo de oscilación en función de la altura del agua al interior del vaso}
+    \label{tabla}
+\end{figure}
+
+
+
+
+\newpage \section{Análisis}
+\subsection{Frecuencias de oscilación de una barra}
+De la tabla 1 se observa que la diferencia porcentual entre la frecuencia del modo longitudinal nominal y medida en las barras es:
+\begin{itemize}
+    \item Para L=0.6 [m], $\Delta f_1$=2.07\%
+    \item Para L=1.2 [m], $\Delta f_1$=5.65\%
+    \item Para L=1.5 [m], $\Delta f_1$=0.89\%
+\end{itemize}
+Además se observa que al aumentar el largo de la barra la frecuencia del modo longitudinal medida disminuye.
+\subsection{Espectro de Fourier de un vaso vacío}
+En la figura \ref{grafico raw data} se observa que la amplitud de la señal acústica oscila en torno a 0 con un comportamiento decreciente, es decir, su valor va disminuyendo.\\ 
+
+Por otro lado, en la figura \ref{FFT } se observa que la amplitud aumenta a un rango de valores para la frecuencia solamente, destacando además que tiene dos peaks, los cuales corresponden a las frecuencias 2437.5 Hz y 4125 Hz. Estos dos peaks son también las dos líneas que se observan en el mapa de calor de la figura \ref{ohhh que calor que calor oe eo ooooooo}.\\ 
+
+Finalmente se observa por la tabla 2 que el vaso vacío tiene dos frecuencias de modo de oscilación.
+\subsection{Variación de las frecuencias de oscilación del vaso con agua }
+De la tabla 3 y la figura \ref{tabla} se muestra que la frecuencia de oscilación del vaso con agua cae exponencialmente a medida que aumenta la altura de agua al interior del vaso.
+\newpage \section{Discusión}
+\subsection{Frecuencias de oscilación de una barra}
+De las barras se observa que sus frecuencias de oscilación nominales y las medidas coinciden de una manera razonable para los distintos largos de la barra. Además de que la frecuencias medidas cumplen con que al aumentar el largo de la barra esta disminuye, hecho que coincide con la fórmula para calcular las frecuencias de los modos longitudinales.
+\subsection{Espectro de Fourier de un vaso vacío}
+Del espectro de Fourier se observa que los peaks representan las frecuencias naturales oscilación del vaso, en este caso se tienen dos, lo cual significa que al hacer vibrar el vaso con algunas de estas frecuencias ayudará a potenciar la amplitud de oscilación del vaso. Como se observa, estos peaks también aparecen en el mapa de color de la figura \ref{ohhh que calor que calor oe eo ooooooo} expresados como lineas verticales blancas.
+\subsection{Variación de las frecuencias de oscilación del vaso con agua }
+Se observa que en el vaso con agua al aumentar la altura del agua dentro del vaso este disminuye su frecuencia natural. Esto se debe a que al aumentar la masa interna del vaso (el agua), la densidad del sistema completo aumenta por lo que dado que al observar en la fórmula (1) de la primera experiencia tenemos que la densidad es inversamente proporcional a la frecuencia de oscilación, por lo que se tendrá que al aumentar la densidad la frecuencia disminuirá.
+
+
+Por otro lado también podemos ver que el aumento de la masa dentro del vaso ocasiona un aumento en el amortiguamiento de las oscilaciones de las señales acústicas producidas.
+
+
+\newpage \section{Conclusión}
+En esta experiencia, se logró estudiar señales acústicas gracias al uso de análisis de espectros de Fourier, el cual permitió identificar las frecuencias naturales de oscilación de estas señales. \\
+
+Así, a través del análisis de los espectros de Fourier obtenidos mediante la perturbación material de un vaso con agua se logró comprender como se relacionaba la cantidad de agua dentro de un vaso con su frecuencia natural de oscilación. Además de lograr familiarizarse con el uso de la aplicación \textit{Phyphox} para realizar experimentos. \\
+
+Por otra parte se logró verificar la verosimilitud de la expresión que describe las frecuencias de los modos longitudinales de una barra en comparación a las frecuencias que se concluyen a través del análisis de sus espectros de Fourier, obteniendo estimaciones prudentes.
+
+\end{document}

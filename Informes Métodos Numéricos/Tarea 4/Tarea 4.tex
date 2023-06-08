@@ -1,0 +1,248 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 4}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Introducción}
+En el presente informe se muestra el desarrollo hecho para la Tarea 4 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. El objetivo en esta tarea es integrar la ecuación de Poisson para el potencia electrostático en una caja rectangular centrada de dimensiones 10 [cm] x 15 [cm].
+$$\nabla^2 V(x, y) = -\rho(x, y)$$
+Dentro de esta caja se encuentra la letra M contenida dentro de un rectángulo centrado de dimensiones 5 [cm] x 7 [cm]. Dentro de la letra la carga es constante tal que la carga total es 
+$$Q = \int \rho(x, y) dx dy = 2.427~[C]$$
+
+Además dentro de la caja a integrar hay una línea entre los puntos (-3, -5.5) y (3, -5.5) que cumple con condiciones de borde derivativas:
+$$ \frac{\partial V}{\partial y} = -1~({\rm sobre~la~línea})$$
+
+
+Para resolver esto se espera implementar el método de sobre relajación de ecuaciones  diferenciales parciales de segundo orden. De esta forma, se analiza para distintos w del método de sobre relajación la velocidad de convergencia a través del cálculo del número de estas iteraciones, y también con el uso de gráficos del potencial electrostático en dos y tres dimensiones.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.3\textwidth]{Tarea 4/M.png}
+    \caption{Letra M con carga costante contenida dentro de la caja.}
+    \label{graf coordenadas}
+\end{figure}{}
+%%%
+\section{Desarrollo}
+Primero se calcula la función $\rho(x,y)$, como esta es constante se tiene que:
+$$ \begin{matrix}\displaystyle  
+ Q = \int_{M} \rho(x,y)dxdy \\    
+\displaystyle Q = \rho(x,y) \int_M dxdy  \\ 
+Q = \rho(x,y)\cdot \mathbf{Area}(M)\\
+\rho(x,y)=Q/\mathbf{Area}(M)
+\end{matrix}
+ $$
+ El  área de la letra corresponde a 17 cuadrados de largo 1 [cm] por lo que el área es 17 $cm^2$.
+\begin{equation}
+    \implies \rho(x,y)=\left\{\begin{matrix}
+Q/\mathrm{Area}(M)~~~~~\mathrm{si}~(x,y)\in M\\
+0 ~~~~~~~~~~~~~~~~~~\mathrm{si (x,y)\notin M } 
+
+\end{matrix}\right.
+\end{equation}
+Se definen los puntos dentro la caja de la forma:
+$$ x_i = x_0+i\cdot h$$
+$$ y_j = y_0+j\cdot h$$
+tal que $i \in [0, 1, 2, ..., 101]$ y $j \in [0, 1, 2,..., 151]$. Así se denota $V_{i,j}=V(x_i, y_j)$. \\ \\
+Considerado esto, se puede escribrir el método de relajación para V:
+\begin{equation}
+   V_{i,j}=V_{i+1,j}+V_{i-1,j}+V_{i,j-1}+V_{i,j+1}-h^2\rho_{i,j} 
+   \label{metodo de relajacion}
+\end{equation}
+Entonces, el método de sobre-relajación de V: 
+\begin{equation}
+    V_{i,j}=(1-w)V_{i,j}+ \frac{w}{4}(V_{i+1,j}+V_{i-1,j}+V_{i,j-1}+V_{i,j+1}-h^2\rho_{i,j}) 
+\end{equation}
+Esto solamente se aplica para puntos del reticulado que no sean parte ni adyacente a la línea que cumple con la condición de borde. De esta manera, se tendrá que escribir una ecuación de movimiento para estas últimas dos.\\ \\
+considerandos las derivadas discretas para atrás y adelante y definiendo i = i y k = J tal que $-3 \leq I \leq 3$ y $J=-5.5$:
+$$ \frac{\partial V}{\partial y}=-1 \implies \frac{\partial V}{\partial y}=\frac{V_{I,J}-V_{I,J-1}}{h}=-1~~\wedge ~~ \frac{\partial V}{\partial y}=\frac{V_{I,J+1}-V_{I,J}}{h} =-1 $$
+\begin{equation}
+V_{I,J}=V_{I,J-1}-h    
+\label{derivada pa atras}
+\end{equation}
+
+\begin{equation}
+V_{I,J} =V_{I,J+1}+ h
+\label{derivada pa adelante}
+\end{equation}
+Las ecuaciones \ref{derivada pa atras} y \ref{derivada pa adelante} sirven para describir el potencial V en ese segmento. Luego, aplicando las ecuaciones \ref{derivada pa atras} y \ref{derivada pa adelante} sobre la ecuación \ref{metodo de relajacion} del método de relajación:
+\begin{equation}
+ V_{I,J-1} = V_{I+1,J}+V_{I-1,J}+V_{I,J-1}+V_{I,J+1} - h^2\rho_{I,J} + h
+ \label{relajamiento para abajo}
+\end{equation}
+\begin{equation}
+    V_{I,J+1} = V_{I+1,J}+V_{I-1,J}+V_{I,J-1}+V_{I,J+1} - h^2\rho_{I,J}  - h
+    \label{relajamiento para arriba}
+\end{equation}
+
+Luego, se aplica sobre-relajamiento sobre las ecuaciones \ref{relajamiento para abajo} y \ref{relajamiento para arriba}:
+\begin{equation}
+    V_{I,J-1} =(1-w)V_{I,J-1}+ \frac{w}{4}(V_{I+1,J}+V_{I-1,J}+V_{I,J-1}+V_{I,J+1} - h^2\rho_{I,J} + h)
+\end{equation}
+\begin{equation}
+    V_{I,J+1} =(1-w)V_{I,J+1} +\frac{w}{4}(V_{I+1,J}+V_{I-1,J}+V_{I,J-1}+V_{I,J+1} - h^2\rho_{I,J}  - h)
+\end{equation}
+Estas últimas dos ecuaciones sirven para describir el potencial en los puntos adyacentes a la condición de borde. La ecuación \ref{relajamiento para abajo} describe para los puntos debajo del segmento y la ecuación \ref{relajamiento para arriba} describe para los puntos arriba del segmento.
+
+Con esto ya se puede implementar un algoritmo que integre el problema. Para esto, se crea una matriz que contendrá todos los valores del potencial V dentro de la caja. Para luego hacer una iteración que ocupe las ecuaciones anteriores, teniendo que preocuparse de tres casos: que el punto sea parte de la condición de borde, que sea adyacente a esta o que no sea adyacente, que vendría siendo el caso general.
+
+\section{Resultados}
+En la figura \ref{letra M} se muestra el ploteo  que se hizo para verificar que la letra estuviera bien implementada.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Tarea 4/letra M.pdf}
+    \caption{Letra M implementada en la caja.}
+    \label{letra M}
+\end{figure}
+Así, en la figura \ref{sin cb} se muestra la solución de la caja sin usar la condición de borde iterativa.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Tarea 4/iteracion sin cb.pdf}
+    \caption{Solución a la ecuación de Poisson sin la condición de borde derivatica. Incluye un mapa de color para observar la diferencia entre las zonas.}
+    \label{sin cb}
+\end{figure}
+En las figura 4 se muestran las soluciones para distintos cuatro distintos w con una tolerancia de convergencia de 0.1.
+\begin{figure}\centering
+\subfloat[Solución para w =1]{\label{a}\includegraphics[width=.35\linewidth]{Tarea 4/iteracion con cb con rtol=0.1 y w=1.pdf}}\hfill
+\subfloat[Solución para w =1.4]{\label{b}\includegraphics[width=.35\linewidth]{Tarea 4/iteracion con cb con rtol=0.1 y w=1.4.pdf}}\par
+\subfloat[Solución para w =1.6]{\label{a}\includegraphics[width=.35\linewidth]{Tarea 4/iteracion con cb con rtol=0.1 y w=1.6.pdf}} \hfill
+\subfloat[Solución para w =1.8]{\label{a}\includegraphics[width=.35\linewidth]{Tarea 4/iteracion con cb con rtol=0.1 y w=1.8.pdf}} \hfill
+
+\caption{Solución para distintos w en el método de sobre-relajación con una tolerancia de convergencia de 0.1 .}
+\label{grafico para rtol = 0.1}
+\end{figure}
+En las figura 5 se muestran las soluciones para distintos cuatro distintos w con una tolerancia de convergencia de 0.01.
+\begin{figure}\centering
+\subfloat[Solución para w =1]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/iteracion con cb con rtol=0.01 y w=1.pdf}}\hfill
+\subfloat[Solución para w =1.4]{\label{b}\includegraphics[width=.4\linewidth]{Tarea 4/iteracion con cb con rtol=0.01 y w=1.4.pdf}}\par
+\subfloat[Solución para w =1.6]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/iteracion con cb con rtol=0.01 y w=1.6.pdf}}\hfill
+\subfloat[Solución para w =1.8]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/iteracion con cb con rtol=0.01 y w=1.8.pdf}}\hfill
+
+\caption{Solución para distintos w en el método de sobre-relajación con una tolerancia de convergencia de 0.1 .}
+
+
+\label{grafico para rtol = 0.01}
+\end{figure}
+
+En la siguiente tabla se muestran los valores obtenidos para el número de obtenidos para cada w.
+\begin{table}
+\begin{tabular}{|l|l|l|l|l|lll|l|l|l|l|l|}
+\cline{1-5} \cline{9-13}
+w              & 1   & 1.4 & 1.6 & 1.8 &  &  &  & w              & 1   & 1.4 & 1.6 & 1.8 \\ \cline{1-5} \cline{9-13} 
+n° iteraciones & 107 & 72  & 57  & 43  &  &  &  & n° iteraciones & 352 & 238 & 284 & 241 \\ \cline{1-5} \cline{9-13} 
+\end{tabular}
+\label{tabla}
+\caption{Tablas con el número de iteraciones para distintos w. La tabla de la izquierda corresponde a las iteraciones con una convergencia de 0.1, mientras que el de la derecha a una convergencia de 0.001 .}
+\end{table}
+
+
+En las figuras de 
+\begin{figure}\centering
+\subfloat[Solución para w =1]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/grafico 3d w=1 y rtol =0.01.pdf}}\hfill
+\subfloat[Solución para w =1]{\label{b}\includegraphics[width=.4\linewidth]{Tarea 4/grafico 3d w=1 y rtol =0.1.png}}\par
+\subfloat[Solución para w =1.8]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/grafico 3d w=1.8 y rtol =0.1.pdf}}\hfill
+\subfloat[Solución para w =1.8]{\label{a}\includegraphics[width=.4\linewidth]{Tarea 4/grafico 3d w=1.8 y rtol =0.01.pdf}}\hfill
+\caption{Gráficos 3D de la solución de Poisson para distintos w, las figuras a y b corresponden a soluciones con una tolerancia de convergencia de 0.1, mientras que las figuras c y d a una tolerancia de 0.01.}
+\end{figure}
+
+
+
+
+\newpage
+\section{Discusión y Conclusiones}
+Respecto a la letra M, como se muestra en la figura 2 se considera que está se implementó bien en la caja. Se observa con las escalas de colores que fuera de la letra la carga es cero mientras que en la letra esta es de un color, es decir una carga constante. \\
+
+De la figura 3 se muestra como se implementó el método de sobre relajación  sin la condición de borde. Esto se muestra como que las cargas se movieron solamente en las letras.
+
+Luego, respecto a la solución en esta se muestra en todas las figuras de 4 y 5 como la condición de borde afecta a las cargas en la caja. En especial se observa como en el segmento que se la cumple la condición de borde esta presenta más cargas al principio que en otras partes. La letra M muestra una carga leve que se  hace más notoria al aumentar el valor de w, esto se puede ver como que las cargas comienza a moverse hacia la letra. Llegando a un punto que no se logra ver la letra de toda la carga que contiene. En la figura 5 se logra notar más esto.\\ \\
+
+Así, observando las tablas se nota que el número de iteraciones es mucho menor cuando w = 1.8, por lo que este debe ser unos de los puntos óptimos para tener una convergencia más rápida. \\ \\
+
+En la figura 6 se observan los soluciones en 3D, acá se observa más como la carga en M aumenta más cuando w = 1.8 y la tolerancia de convergencia es 0.01. En ese punto la letra ya no se observa, es más una especie de valle a diferencia de los otros gráficos que se observan dos valles. \\
+
+Finalmente se considera que se logró el objetivo de implementar el método de sobre relajación en el problema de Poisson junto a una condición de borde derivativa.
+
+
+
+
+
+
+
+
+
+ % FIN DEL DOCUMENTO
+\end{document}
+
+

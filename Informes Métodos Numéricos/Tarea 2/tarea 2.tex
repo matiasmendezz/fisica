@@ -1,0 +1,213 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+\usepackage{multicol}
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 2}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+\renewcommand{\baselinestretch}{1.5} %interlineado
+\setlength{\parindent}{12pt} %sangría
+\setlength{\parskip}{1mm} %salto de párrafos
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+
+\section{Introducción}
+En el presente informe se muestra el desarrollo hecho para la Tarea 2 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. Consistente de dos problemas, el primer objetivo es integrar la ecuación de movimiento de un péndulo simple en un medio viscoso con condiciones de borde, implementado el método de RK4. La ecuación de movimiento es 
+$$\ddot{\phi}=-\gamma \dot{\phi}- \frac{g}{l} sin(\phi)   $$
+Donde $l=5.427$ [m], $g=9.8$ m/$s^2$ y $gamma=2.427~s^{-1}$. Las condiciones de borde son $\phi(t=0)=\phi_0=0.0001$ y $\dot{phi}(t=0)=0$ 
+\\
+El resultado se compara con la solución del péndulo para pequeñas oscilaciones. Y además, se integra nuevamente para una condición de borde $\phi_0=\pi/2.427$. Se estudia la energía en este caso, y también se compara con el caso de las pequeñas oscilaciones.
+\\
+El segundo objetivo es integrar mediante un algoritmo RK4 para un tiempo determinado el sistema de Lorentz, que corresponde al set de ecuaciones diferenciales ordinarias
+$$\frac{dx}{ds}=\sigma (y-x) $$
+$$\frac{dy}{ds}=x(\rho-z)-y$$
+$$\frac{dz}{ds}=xy-\beta z $$
+Con parámetros $\sigma = 10$, $\beta = 8/3$ y $\rho = 28$. Junto a las condiciones iniciales $(x_0,y_0,z_0)=(1,1,1)$. Y además se estudia la solución cuando se perturba $y_0\rightarrow y_0+0.0427$, comparándose con la primera solución.
+
+\newpage
+\section{Desarrollo}
+\subsection{Problema 1}
+Para pequeñas oscilaciones tenemos que $sen(\phi)\approx \phi$, quedando la ecuación de movimiento como
+$$\ddot{\phi}=-\gamma \dot{\phi}-\frac{g}{l}sin(\phi) \implies \ddot{\phi}=-\gamma \dot{\phi}-\frac{g}{l}\phi$$
+Esta EDO de segundo orden tiene una solución analítica del tipo
+$\phi(t)= A\cdot e^{-\frac{\gamma}{2}t}\cdot sin(wt+\varphi) $\\ 
+con $w=\sqrt{\frac{g}{l}-\left (\frac{\gamma}{2}  \right )^2}$, 
+$tan\phi=\frac{\phi_0\cdot w}{\dot{\phi_0}+\frac{\gamma}{2}\phi_0}$ y     $A=\sqrt{\phi_0^2+\left ( \frac{\dot{\phi_0}+\frac{\gamma}{2}\phi_0}{w} \right )^2}$.
+\\ \\
+De esta forma para resolver la ecuación de movimiento y aplicar el algoritmo de RK4, se transforma la ecuación en una EDO vectorial de primer orden. Para eso definimos $\vec{y}=\begin{pmatrix}
+\phi \\ w\end{pmatrix}$ tal que $\frac{d}{dt}\phi=w$, con esto aparece la siguiente EDO $$\frac{\mathrm{d} }{\mathrm{d} t}\vec{y}=\vec{f}(t,\vec{y})=\begin{pmatrix}
+w \\ -\gamma w-\frac{g}{l}sin(\phi)
+\end{pmatrix}$$
+Así tenemos $\frac{d}{dt}\vec{y}=\vec{f}(t,\vec{y})$, con la condición inicial $\vec{y_0}=(0.0001, 0)$. Entonces esta es la EDO que se resuelve, por lo que se puede aplicar RK4. Tenemos que el algoritmo usado para calcular un punto $y_n$ con un intervalo de tiempo $dt$, es
+$$\vec{y_{n+1}}=\vec{y_n}+\frac{1}{6}(\vec{k_1}+\vec{k_2}+\vec{k_3}+\vec{k_4}) $$
+donde $$\begin{matrix} 
+\vec{k_1}=\vec{f}(t_n,\vec{y_n})\\ 
+\vec{k_2}=\vec{f}(t_n+0.5\cdot dt, \vec{y_n}+0.5\cdot k_1\cdot dt)\\ 
+\vec{k_3}=\vec{f}(t_n+0.5\cdot dt, \vec{y_n}+0.5\cdot k_2\cdot dt)\\ 
+\vec{k_4}=\vec{f}(t_n+ dt, \vec{y_n}+k_3\cdot dt)
+\end{matrix}$$
+
+Entonces, lo que se implementa en el código es el cálculo de las constantes $\vec{k_1}$, $\vec{k_2}$, $\vec{k_3}$ y $\vec{k_4}$ para cada punto. Para luego, a partir del punto $\vec{y_0}$,  hacer una iteración de n pasos tal que llegue a un tiempo determinado, en este caso se llegará hasta el segundo 10 con un intervalo de tiempo $dt=0.001$. El método de RK4 tiene un error por paso del orden de $O(dt^4)$, por lo que se espera llegar a tener 9 decimales de precisión en el resultado.
+
+Este algoritmo nos entrega por cada punto el valor de $\phi$, y su velocidad $\dot{\phi}$. Para el caso de la perturbación, se realiza el mismo procedimiento solo que ahora la condición inicial es $\vec{y_0}=(\pi/2.427, 0)$.
+
+Para el estudio del péndulo cuando se realiza una perturbación, se utiliza la energía total para comparar su valor entre la solución numérica y analítica. Así, se tiene que la energía total de un péndulo es
+$$E=\frac{1}{2}ml^2\dot{\phi^2}-mglcos(\phi)$$
+\subsection{Problema 2}
+Como en el problema anterior, para resolver este set de EDOs es necesario transformarla lo anterior en una EDO vectorial de primer orden. Así, se define el vector $\vec{r}$, 
+$$\vec{r}=\begin{pmatrix}
+x\\ 
+y\\ 
+z
+\end{pmatrix} $$
+De esta forma queda la siguiente EDO vectorial
+$$ \frac{\mathrm{d} }{\mathrm{d} t}\vec{r}==\vec{f}(t,\vec{r})=\begin{pmatrix}
+\sigma (y-x)\\ 
+x(\rho-z)-y\\ 
+xy-\beta z
+\end{pmatrix}$$
+En este caso, se utiliza el método de RK45 de la librería de \textit{scipy-integrate}, el cual utiliza el algoritmo RK4 junto a RK5 como paso adaptativo. Este algoritmo crea un objeto clase scipy.integrate.RK45. Los inputs para este objeto son:
+\begin{itemize}
+\begin{multicols}{2}
+    \item $\vec{f}(t,\vec{r})$, función a integrar
+    \item $t_0=0$, tiempo inicial
+    \item $\vec{r_0}=(1,1,1)$, condición inicial
+    \item $rtol=10^{-13}$, precisión relativa
+    \item $t_{bound} = 50$, tiempo máximo a integrar
+    \item vectorized= True, indica que \vec{f} es vectorial
+\end{multicols}
+\end{itemize}
+Luego teniendo el objetivo, aplicando la función step() de la clase, se avanza hacia el punto $\vec{y_1}$. De esta forma, se hace una iteración para avanzar N puntos de tal forma que se llegué hasta el momento $t=50$. Para la perturbación se realiza, los mismos pasos anteriores solamente que ahora la condición inicial es $\vec{r_0}=(1,1+0.0427)$.
+
+\section{Resultados}
+\subsection{Problema 1}
+En la figura \ref{grafico phi sin perturbacion} se muestran dos gráficos, el primero se refiere a la solución numérica de la ecuación de movimiento del péndulo versus la solución analítica. Luego, en el segundo gráfico se muestra la diferencia entre estas dos soluciones.
+\begin{figure}
+    \centering    
+    \includegraphics[width=1\textwidth]{Tarea 2/grafico phi sin perturbacion pregunta 1.pdf}
+    \caption{Solución numérica junto a la analítica para la ecuación de movimiento de un péndulo simple en un medio viscoso.}
+    \label{grafico phi sin perturbacion}
+\end{figure}{}
+En la figura \ref{grafico phi con perturbacion} se muestra el gráfico con la solución numérica versus la solución analítica para una condición inicial $\phi_0=\i/2.427$.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.5\textwidth]{Tarea 2/grafico phi con perturbacion pregunta 1.pdf}
+    \caption{Solución numérica junto a la analítica para la ecuación de movimiento de un péndulo simple en un medio viscoso.}
+    \label{grafico phi con perturbacion}
+\end{figure}{}
+Finalmente, en la figura \ref{energia} se muestra la energía total para las soluciones anteriores.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.5\textwidth]{Tarea 2/Grafico energia con perturbacion.pdf}
+    \caption{Energía total de la solución numérica versus la solución analítica para la ecuación de movimiento de un péndulo simple en un medio viscoso, con una condición inicial $\phi_0=\pi/2.427$ y $\dot{\phi_0}=0$.}
+    \label{energia}
+\end{figure}{}
+
+\subsection{Problema 2}
+En la figura \ref{graf 3D}, se muestran dos gráficos en 3D, correspondientes a las soluciones para el sistema de Lorentz. La figura \ref{graf 3D} (a) corresponde a la solución numérica con la condición inicial (1,1,1), mientras que la figura \ref{graf 3D} (b) corresponde a la solución numérica con una perturbaciones, de tal forma que la condición inicial es (1,1+0.0427,1).
+\begin{figure}\centering
+\subfloat[Solución numérica sin perturbación.]{\label{a}\includegraphics[width=.5\linewidth]{Tarea 2/grafico 3D sin perturbacion.pdf}}\hfill
+\subfloat[Solución numérica con perturbación.]{\label{b}\includegraphics[width=.5\linewidth]{Tarea 2/grafico 3D con perturbacion.pdf}}
+\caption{Soluciones numéricas hechas con RK4 de la librería scipy-integrate para el sistema de Lorentz, con y sin perturbación en Y para un tiempo de 50 segundos aproximado.}
+\label{graf 3D}
+\end{figure}
+En la figura \ref{graf coordenadas} se muestran las soluciones numéricas con y sin perturbación para el sistema de Lorentz en gráficos por coordenadas y tiempo respectivamente.
+
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.9\textwidth]{Tarea 2/grafico coordenadas vs tiempo.pdf}
+    \caption{Gráficos para la solución numérica con y sin perturbación para un tiempo de integración de 50 segundos.}
+    \label{graf coordenadas}
+\end{figure}{}
+
+\newpage
+Finalmente, en la figura \ref{grafico de planos} se muestran los gráficos hechos en la figura \ref{graf 3D} vistas desde 3 planos distintos para un tiempo de integración aproximado de 50 segundos.
+
+
+
+\newpage
+\section{Discusión y Conclusiones}
+Respecto al problema 1, se tiene que la solución numérica para la ecuación de movimiento con el algoritmo de RK4 implementado es bastante precisa, a simple vista no se ve la diferencia entre la solución numérica y la analítica del caso de pequeñas oscilaciones. La precisión, como se observa en la figura 1, es de 9 decimales por lo que fue la precisión esperada del algoritmo, y se logra implementar bien RK4. 
+\\
+Para la nueva condición inicial impuesta, se observa, en la figura 2, que las soluciones numéricas y analítica se diferencian por poco en los primeros dos segundos de integración. Mientras que en el resto del tiempo se observa que son bastante parecidas. Respecto a la energía total de estas, figura 3,  se ve una considerable diferencia de energía en los dos primeros segundos de integración. Así se ve que la solución numérica pierde energía de forma más rápida.  Esta diferencia en los dos primeros se puede deber a la nueva condición inicial $\phi_0$, al ser esta mayor que 1 no se comporta al principio como el movimiento del péndulo para pequeñas oscilaciones.  
+
+Respecto al problema 2, se observa en los gráficos de las figuras 4, 5 y 6 la correcta implementación de RK4 de la librería scipy-integrate. Por otro lado, se observa una diferencia entre los comportamientos con y sin perturbación, el comportamiento con perturbación presenta una mayor concentración de lineas en el centro de los agujeros de figura, mientras que el otro presenta una mayor concentración afuera del centro de los agujeros. De la figura 5, se observa que en los ejes X e Y ambos comportamiento son similares hasta el segundo 15 de integración aproximadamente, luego comienzan a tener comportamientos opuestos. Por otro lado, en el eje Z muestran un comportamiento bastante similar durante todo el tiempo de integración.
+
+%explicar como se utiliza el algoritmo de rk4 . Mencionar que se hace
+%con la perturbacion. Hablar antes sobre la condicion inicial
+%Resultados, pa la 1 mostrar graficos para distintos 
+%Mostrar los siete graficos. TAL VEZ HACER MAS GRAFICOS PARA LA P1.
+%HABLAR SOBRE EL ERROR, DISCUTIR EL PASO TEMPORAL DECIR POR QUE SE USA PASO TEMPORALY LA PRECISION QUE SE ESPERA
+%MOSTRAR EL GRAFICO DE ERRORES EN LA P1 TAL VEZ DECIR QUE HAY UN PROBLEMA AL VER QUE LE ERROR DISMINUYE EN VEZ DE AUMENTAR 
+%hABLAR EN LA ENERGIA SOBRE EL PUNTO DE EQULIBRIO Q ES LA ENERGIA MINIMA Q LE QUEDARA AL SISTEMA 
+% FIN DEL DOCUMENTO
+\end{document}

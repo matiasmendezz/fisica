@@ -1,0 +1,436 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 4}
+\def\temaatratar {Filtros}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+Los filtros de frecuencia son circuitos eléctricos que alteran la amplitud de ciertas señales eléctricas dada una frecuencia. Estos filtros se utilizan en variadas áreas y tienen numerosas aplicaciones en la tecnología, en esta experiencia de laboratorio se trabaja con ellas y se analiza como varía su comportamiento con distintos valores y configuraciones de sus componentes.\\
+Se definen conceptos fundamentales para trabajar en este marco teórico como lo es la función transferencia y sus implicancias. Se utiliza, primeramente, un circuito RC para conformar el estudio de un filtro de paso bajo y también uno de paso alto.\\
+A continuación se utiliza una inductancia para construir un circuito RLC que permite el estudio del filtro pasa banda y se discute sobre la aplicación de los filtros en la tecnología. Para ambos filtros se visualiza la respuesta frente a un amplio rango de frecuencias, además, para esto se considera la frecuencia de resonancia de cada uno de los circuitos.\\
+Finalmente, agregando un potenciómetro y variando su valor de resistencia es posible analizar distintas configuraciones de amortiguamiento para este sistema, incluyendo un amortiguamiento crítico.\\
+De esta manera se logra generar una intuición con el concepto de función transferencia y se permite familiarizar con los fundamentos de los filtros de frecuencia. 
+
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %%
+% AGREGAR CONCLUSION!!  AGREGAR CONCLUSION!! %%
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %%
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Metodología}
+\subsection{Experiencia 1: Filtro pasa alto y pasa bajo}
+La primera experiencia parte con la construcción, en LTspice, del circuito RC de la figura \ref{circuito RC}, con R=1k $\ohm$, C=10000 pF y un voltaje alterno de 1 V de amplitud. 
+    
+Luego, se procede a estimar la frecuencia de corte $\omega^*$ del filtro del circuito con la fórmula:
+$$\omega^*=\frac{1}{RC}$$
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorios/Laboratorio 4/circuito parte b.jpg}
+    \caption{Circuito RC}
+    \label{circuito RC}
+\end{figure}
+Se mide la función transferencia entre los puntos b y c del circuito, usando al menos 20 frecuencias,incluyendo la frecuencia de corte , en un rango bastante amplio. En una tabla se registran los valores obtenidos para la función transferencia, la frecuencia, el voltaje de entrada y el voltaje de salida. \\
+
+Para la medición de la función transferencia se usa AC Analysis en LTspice con una frecuencia de inicio de 1.6 Hz y una frecuencia final de 30 MHz.  \\
+
+Con los datos obtenidos se gráfica la función transferencia en función v/s la frecuencia en escala logarítmica, con el objetivo de identificar el tipo de filtro del condensador en el circuito.\\
+
+Finalmente, en el circuito de la figura \ref{circuito RC}
+se invierte la resistencia y el condensador, y se vuelve a repetir el proceso anterior con el objetivo ahora de identificar el tipo de filtro de la resistencia.
+
+
+
+
+\subsection{Experiencia 2: Filtro pasa banda}
+La segunda experiencia parte con la construcción, en LTspice, del circuito RLC de la figura \ref{circuito RLC}, con C=3300 pF, L=22 mH y un voltaje alterno de 1 V de amplitud.  Además en cada componente se le agrega una resistencia interna de la siguiente manera: 25 $\ohm$ para la fuente de voltaje, 20 $\ohm$ para la inductancia y 5 $\ohm$ para el condensador. 
+
+Luego se procede a estimar la frecuencia de resonancia $\omega_0$ del filtro del circuito RLC con la fórmula:
+
+$$\omega_0=\sqrt{\frac{1}{LC}}$$
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\textwidth]{Laboratorios/Laboratorio 4/circuito exp 2.png}
+    \caption{Circuito RLC}
+    \label{circuito RLC}
+\end{figure}
+
+Se mide la función transferencia entre los puntos b y c del circuito, usando al menos 20 frecuencias, incluyendo la frecuencia de corte , en un rango bastante amplio. En una tabla se registran los valores obtenidos para la función transferencia, la frecuencia, el voltaje de entrada y el voltaje de salida. \\
+
+Para la medición de la función transferencia se usa AC Analysis en LTspice con una frecuencia de inicio de 1.8 Hz y una frecuencia final de 30 MHz.\\
+
+Con los datos obtenidos se gráfica la función transferencia en función v/s la frecuencia, ambos en escala logarítmica, con el objetivo de identificar el tipo de filtro de la inductancia en el circuito.
+
+\subsection{Experiencia 3: Tipos de amortiguamiento de un circuito RLC}
+
+
+Usando el circuito RLC anterior, de la figura \ref{circuito RLC}, se agrega una resistencia que actuará como un potenciómetro.\\
+
+La fuente de voltaje alterna en este caso emite una señal cuadrática de 2V y 200 Hz. Así en LTspice para formar la señal se coloca:
+
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+\textbf{Parámetro}   & \textbf{Valor} \\ \hline
+$V_{initial}{[}V{]}$ & -1             \\ \hline
+$V_{on}{[}V{]}$      & 1              \\ \hline
+$t_{delay}{[}s{]}$   & 0              \\ \hline
+$t_{rise}{[}s{]}$    & 1p             \\ \hline
+$t_{fall}{[}s{]}$    & 1p             \\ \hline
+$t_{on}{[}s{]}$      & 0.001          \\ \hline
+$t_{period}{[}s{]}$  & 0.005          \\ \hline
+$N_{cycles}$         & 0              \\ \hline
+\end{tabular}
+\end{center}
+
+De esta forma, se mide la corriente del circuito en un tiempo de 1ms, variando los valores de la resistencia. Esto se hace varias veces para ver como se comporta la corriente, y así observar los tipos de amortiguamientos de un circuito RLC. \\
+
+Los valores utilizados para la resistencia serán 10 $\ohm$, 1000 $\ohm$, 5000 $\ohm$ y 10 000 $\ohm$.
+
+
+
+\newpage
+\section{Resultados}
+\subsection{Experiencia 1: Filtro pasa alto y pasa bajo}
+
+A continuación se muestra la estimación para la frecuencia de corte $\omega^*$ para el filtro del circuito de la Figura \ref{circuito RC}. \\
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%555%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+$$w^*=\frac{1}{RC}=\frac{1}{10^{-5}}[\frac{rad}{s}]=10^5 [\frac{rad}{s}]=15915,4 [Hz]$$ \\
+La tabla 1 muestra los valores medidos entre los puntos b y c del circuito RC de la Figura \ref{circuito RC} para la función transferencia, voltaje de entrada($V_{in}$) y voltaje de salida ($V_{out}$) para distintas frecuencias, incluyendo la frecuencia de corte.
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia {[}Hz{]}} & \textbf{$V_{in}$ {[}V{]}} & \textbf{$V_{out}$ {[}V{]}} & \textbf{$T(\omega)$} \\ \hline
+1.6                          & 1                         & 1                          & 1                    \\ \hline
+10                           & 1                         & 0.99998                    & 0.99998              \\ \hline
+100                          & 1                         & 0.99982                    & 0.99982              \\ \hline
+1000                         & 1                         & 0.99558                    & 0.99558              \\ \hline
+2500                         & 1                         & 0.97538                    & 0.97538              \\ \hline
+5000                         & 1                         & 0.90823                    & 0.90823              \\ \hline
+8000                         & 1                         & 0.79806                    & 0.79806              \\ \hline
+10k                          & 1                         & 0.71061                    & 0.71061              \\ \hline
+12k                          & 1                         & 0.63608                    & 0.63608              \\ \hline
+15.9154k                     & 1                         & 0.50015                    & 0.50015              \\ \hline
+30k                          & 1                         & 0.22377                    & 0.22377              \\ \hline
+70k                          & 1                         & 0.048426                   & 0.048426             \\ \hline
+120k                         & 1                         & 0.017426                   & 0.017426             \\ \hline
+250k                         & 1                         & 0.0040354                  & 0.0040354            \\ \hline
+500k                         & 1                         & 0.0010120                  & 0.0010120            \\ \hline
+1M                           & 1                         & 0.00025305                 & 0.00025305           \\ \hline
+5M                           & 1                         & 0.000010130                & 0.000010130          \\ \hline
+10M                          & 1                         & 0.0000025330               & 0.0000025330         \\ \hline
+20M                          & 1                         & 0.00000063211              & 0.00000063211        \\ \hline
+30M                          & 1                         & 0.00000098324              & 0.00000098324        \\ \hline
+\end{tabular}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La Figura \ref{parte e} muestra la función transferencia con la frecuencia en escala logarítmica, con los  valores medidos entre los puntos b y c del circuito RC de la Figura \ref{circuito RC} .
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorios/Laboratorio 4/grafico parte e.pdf}
+    \caption{Función transferencia medida en función de la frecuencia para el circuito RC.}
+    \label{parte e}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La tabla 2 muestra los valores medidos entre los puntos b y c del circuito RC de la Figura \ref{circuito RC} con la resistencia y el condensador invertidos,  para la función transferencia, voltaje de entrada($V_{in}$) y voltaje de salida ($V_{out}$) para distintas frecuencias, incluyendo la frecuencia de corte.
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia {[}Hz{]}} & \textbf{$V_{in}$ {[}V{]}} & \textbf{$V_{out}$ {[}V{]}} & \textbf{$T(\omega)$} \\ \hline
+1.6                          & 1                         & 0.000000010106             & 0.000000010106       \\ \hline
+10                           & 1                         & 0.000015314                & 0.000015314          \\ \hline
+100                          & 1                         & 0.00017968                 & 0.00017968           \\ \hline
+1000                         & 1                         & 0.0041101                  & 0.0041101            \\ \hline
+2500                         & 1                         & 0.024438                   & 0.024438             \\ \hline
+5000                         & 1                         & 0.089765                   & 0.089765             \\ \hline
+8000                         & 1                         & 0.20180                    & 0.20180              \\ \hline
+10k                          & 1                         & 0.28384                    & 0.28384              \\ \hline
+12k                          & 1                         & 0.36350                    & 0.36350              \\ \hline
+15.9154k                     & 1                         & 0.50050                    & 0.50050              \\ \hline
+30k                          & 1                         & 0.78023                    & 0.78023              \\ \hline
+70k                          & 1                         & 0.95110                    & 0.95110              \\ \hline
+120k                         & 1                         & 0.98288                    & 0.98288              \\ \hline
+250k                         & 1                         & 0.99598                    & 0.99598              \\ \hline
+500k                         & 1                         & 0.99898                    & 0.99898              \\ \hline
+1M                           & 1                         & 0.99975                    & 0.99975              \\ \hline
+5M                           & 1                         & 0.99999                    & 0.99999              \\ \hline
+10M                          & 1                         & 1                          & 1                    \\ \hline
+20M                          & 1                         & 1                          & 1                    \\ \hline
+30M                          & 1                         & 1                          & 1                    \\ \hline
+\end{tabular}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+La Figura \ref{parte g} muestra la función transferencia con la frecuencia en escala logarítmica, con los valores medidos entre los puntos b y c del circuito RC de la Figura \ref{circuito RC} con la resistencia y el condensador invertidos.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorios/Laboratorio 4/grafico parte g.pdf}
+    \caption{Función transferencia medida en función de la frecuencia para el circuito RC con la resistencia y el condensador invertidos.}
+    \label{parte g}
+\end{figure}
+
+
+\subsection{Experiencia 2: Filtro pasa banda}
+La tabla 3 muestra los valores medidos entre los puntos b y c del circuito RLC de la Figura \ref{circuito RLC} para la función transferencia, voltaje de entrada($V_{in}$) y voltaje de salida ($V_{out}$) para distintas frecuencias, incluyendo la frecuencia natural.
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia {[}Hz{]}} & \textbf{$V_{in}$ {[}V{]}} & \textbf{$V_{out}$ {[}V{]}} & \textbf{$T(\omega)$} \\ \hline
+100                          & 1                         & 1.0000287                  & 1.0000287            \\ \hline
+1000                         & 1                         & 1.0028758                  & 1.0028758            \\ \hline
+5000                         & 1                         & 1.077208                   & 1.077208             \\ \hline
+10000                        & 1                         & 1.4017281                  & 1.4017281            \\ \hline
+12000                        & 1                         & 1.7027322                  & 1.7027322            \\ \hline
+14000                        & 1                         & 2.2822826                  & 2.2822826            \\ \hline
+16000                        & 1                         & 3.7610243                  & 3.7610243            \\ \hline
+18678.923                    & 1                         & 103.24103                  & 103.24103            \\ \hline
+20000                        & 1                         & 6.7936528                  & 6.7936528            \\ \hline
+22k                          & 1                         & 2.5812186                  & 2.5812186            \\ \hline
+24k                          & 1                         & 1.5370122                  & 1.5370122            \\ \hline
+26k                          & 1                         & 1.0662846                  & 1.0662846            \\ \hline
+30k                          & 1                         & 0.63308                    & 0.63308              \\ \hline
+60k                          & 1                         & 0.10730                    & 0.10730              \\ \hline
+80k                          & 1                         & 0.057660                   & 0.057660             \\ \hline
+100k                         & 1                         & 0.036122                   & 0.036122             \\ \hline
+500k                         & 1                         & 0.0013994                  & 0.0013994            \\ \hline
+1M                           & 1                         & 0.00035028                 & 0.00035028           \\ \hline
+5M                           & 1                         & 0.000015716                & 0.000015716          \\ \hline
+10M                          & 1                         & 0.0000050221               & 0.0000050221         \\ \hline
+\end{tabular}
+\end{center}
+
+La Figura \ref{parte j} muestra gráficamente la función transferencia para distintas frecuencias con ambos ejes en escalas logarítmicas, con los valores medidos entre los puntos b y c del circuito RLC de la Figura \ref{circuito RLC}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{Laboratorios/Laboratorio 4/grafico parte j.pdf}
+    \caption{Función transferencia medida en función de la frecuencia para el circuito RLC.}
+    \label{parte j}
+\end{figure}
+
+
+
+\subsection{Experiencia 3: Tipos de amortiguamiento de un circuito RLC}
+La Figura \ref{parte final} muestra los valores obtenidos para la corriente del circuito de la Figura \ref{circuito RLC} con una resistencia R agregada, junto a 4 variaciones del valor de esta resistencia.
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{Laboratorios/Laboratorio 4/grafico parte final.pdf}
+    \caption{Intensidad de corriente medida en función del tiempo a distintas resistencias}
+    \label{parte final}
+\end{figure}
+
+
+\newpage
+\section{Análisis}
+\subsection{Experiencia 1: Filtro pasa alto y pasa bajo}
+De la tabla 1 y de la Figura 3 se observa que
+la función transferencia para valores entre 
+1.6Hz y $10^3$ Hz
+su valor es aproximadamente 1. Luego para 
+las frecuencias entre $10^3$ Hz y $10^5$ Hz
+el valor de la función disminuye gradualmente, cabe 
+destacar que para la frecuencia de corte 
+15.9154 Hz el valor de la
+función es aproximadamente 0.5. Finalmente, 
+la función para frecuencias mayores a $10^5$ Hz, hasta 30 MHz, 
+el valor de la función es casi nula.
+
+De la tabla 2 y Figura 4 se observa que la 
+función transferencia es casi nula para valores
+entre 1.6 Hz y $10^3$ Hz. Luego para las frecuencias
+entre $10^3$ Hz y $10^5$ Hz el valor de la función
+aumenta gradualmente, cabe destacar
+que para la frecuencia de corte
+15.9153 Hz el valor de la función
+es aproximadamente 0.5. Finalmente para frecuencias
+mayores a $10^5$ Hz, hasta 30 MHz, el valor de la función es casi nula.
+
+
+
+
+\subsection{Experiencia 2: Filtro pasa banda}
+
+De la tabla 3 y Figura 5 se observa que la 
+función transferencia para frecuencias 
+entre 1.6 Hz y $10^3$ Hz su valor es 
+aproximadamente 1. Luego, entre $10^3$ Hz y 
+18678.923 Hz(frecuencia natural) la función 
+transferencia aumenta de forma exponencial. Finalmente, 
+la función a partir de la frecuencia
+de resonancia comienza a decaer, en 26000 Hz alcanza a
+valer 1 para luego decaer a casi un valor nulo para 
+frecuencias entre 26 kHz y 10 MHz.
+
+
+
+\subsection{Experiencia 3: Tipos de amortiguamiento de un circuito RLC}
+
+De la figura 6 se observa que la corriente para una
+resistencia de 10 $\ohm$ y 1000 $\ohm$  tiene
+un comportamiento sinusoidal. Mientras que para
+la resistencia
+de 5000 $\ohm$ la corriente tiene un decrecimiento exponencial. Y finalmente para una resistencia de 10000 $\ohm$
+la corriente tiene un decrecimiento exponencial más abrupto que el anterior. 
+
+\newpage
+\section{Discusión}
+\subsection{Experiencia 1: Filtro pasa alto y pasa bajo}
+La función de transferencia, matemáticamente se define como $T(\omega)=\begin{vmatrix}
+ \frac{V_{\mathrm{out}}}{V_{\mathrm{in}}}
+\end{vmatrix}  $, donde $V_{\mathrm{in}}$ y $V_{\mathrm{out}}$ son el voltaje que entra y sale del sistema, respectivamente. \\
+
+Esta función en un circuito representa la respuesta del circuito para el voltaje que se quiera medir, asi se puede reconocer el tipo de filtro qué hay en el circuito. Así, si $\omega \rightarrow \infty \implies T(\omega) \rightarrow 0$ el circuito no deja pasar frecuencias altas sino que solo las bajas, por lo que el circuito es un filtro pasa bajo. \\
+
+En cambio, si $\omega \rightarrow 0 \implies T(\omega) \rightarrow 0$, el circuito no deja pasar frecuencias bajas sino que solo las altas, por lo que el circuito es un filtro pasa alto.
+  \\
+ 
+ En la primera parte de la experiencia se comprueba que en el circuito de la Figura \ref{circuito RC} se presenta un filtro pasa bajo, al observar que en el gráfico de la función transferencia (Figura \ref{parte e}), medido en el circuito entre los puntos b y c, se permiten el paso de frecuencias bajas mientras que para frecuencias altas esta se atenúa. \\
+ 
+ El voltaje de salida $V_{out}$ en este caso es la diferencia de potencial medido en el condensador, notemos que la función de transferencia para un condensador en un circuito RC es $T_C(\omega)=\frac{1}{\sqrt{1+\omega^2R^2C^2}}$. Este el valor teórico de la función tiene el mismo comportamiento gráficamente con el medido.\\
+ 
+ Por otro lado, cuando se invierte la resistencia y el condensador en el circuito de la Figura \ref{circuito RC} se presenta un filtro pasa alto, al observar que en el gráfico de la función transferencia (Figura \ref{parte j}), medido en el circuito entre los puntos b y c, se permite el paso de frecuencias altas mientras que para frecuencias bajas esta se atenúa. \\
+ 
+ En este otro caso, el voltaje de salida $V_{out}$ en este caso es la diferencia de potencial medido en la resistencia, notemos que la función de transferencia para una resistencia en un circuito RC es $T_R(\omega)=\frac{RC\omega}{\sqrt{1+\omega^2R^2C^2}}$. Este el valor teórico de la función tiene el mismo comportamiento gráficamente con el medido.
+
+\subsection{Experiencia 2: Filtro pasa banda}
+En esta experiencia se comprueba que el circuito RLC de la figura \ref{circuito RLC} tiene un filtro pasa banda, al observar que el gráfico de la función transferencia medido para la inductancia, al medirse entre los puntos b y c, (Figura \ref{parte j}) permite el paso de un rango determinado de frecuencias para la amplificación del voltaje. Además de coincidir gráficamente con la fórmula teórica para la función transferencia de la inductancia, cuya fórmula para esta es $T_R(\omega)=\frac{\omega^2LC}{\sqrt{(1-\omega^2LC)^2+\omega^2R^2C^2}}$.\\
+
+    %%%%%%%%%%%%%%%%%Hablar sobre el uso tecnológico para cada filtro
+Los filtros de frecuencia tienen variados usos en la tecnología dada su naturaleza que permite procesar estas señales, algunos ejemplos particulares son:
+\begin{itemize}
+    \item[\rightarrow] En la ingeniería de sonido el \textbf{filtro de paso bajo} es comúnmente utilizado en sistemas de ecualización y amplificación de audio, es clave para la industria de la grabación de sonido y los equipos que se suelen usar en estudios de grabación.
+    \item[\rightarrow] En la óptica el \textbf{filtro de pasa banda} es comúnmente utilizado para gestionar instrumentos. También se utiliza en la edición digital, por ejemplo: es posible filtrar colores en una fotografía haciendo uso de este filtro.
+    \item[\rightarrow] Adicionalmente, en el procesamiento de imágenes digitales también se suele utilizar el \textbf{filtro de paso alto} para hacer restauración de imágenes, reducción de ruido y para generar imágenes más nítidas. 
+\end{itemize}
+
+
+
+\subsection{Experiencia 3: Tipos de amortiguamiento de un circuito RLC}
+En esta experiencia se observa como es la respuesta de la corriente del circuito de la Figura \ref{circuito RLC}, al variar el valor de la resistencia agregada. \\ 
+
+Para una resistencia pequeña, R=10 $\ohm$ la corriente se comporta de forma sinusoidal con la amplitud disminuyendo a través del tiempo. Luego para R=1000 $\ohm$ esta sigue con el comportamiento sinusoidal pero con amplitud disminuyendo de forma más rápida. En estas dos resistencia se observa que la corriente tiene un comportamiento subamortiguado.\\
+
+Para R= 5000 $\ohm $ con las resistencia probadas antes en el circuito, se tiene que la corriente presenta un  ligero comportamiento exponencialmente decreciente, por lo que es un amortiguamiento crítico. Así ésta resistencia se aproxima a la resistencia crítica. \\
+
+Para la última resistencia, R=10000 $\ohm $, la corriente presenta un abrupto comportamiento exponencialmente decreciente, por lo que se obtiene un sobreamortiguamiento.\\
+
+Con esto se tiene que el circuito RLC utilizado se comporta con lo esperado teóricamente, ya que al utilizar una resistencia menor a la resistencia crítica se obtiene un comportamiento subamortiguado, y para una resistencia mayor a la resistencia crítica se obtiene un comportamiento sobreamortiguado.\\
+
+
+Para estimar L se considera que para R=5000 $\ohm $, se tiene un comportamiento crítico. Por lo que se cumple que $R_c=2\sqrt{\frac{L}{C}}$. Donde $R_c$= 5000+ 50 $\ohm$, ya que los otros componentes tienen una resistencia interna también. Así, con lo anterior
+$$L=\frac{R_c^2C}{4}=\frac{5050^2\cdot 3300 \cdot10^{-12}}{4}=21.039~ \textrm{mH}$$ Valor que se aproxima bastante al real, 22 mH.
+
+
+
+
+\newpage
+\section{Conclusión}
+
+A través de la realización de esta experiencia se logró entender las básicas de la construcción y el funcionamiento de los filtros de frecuencia. \\
+
+Se logra consolidar una familiarización con los conceptos de frecuencia de corte, frecuencia natural y frecuencia de resonancia, en un contexto de sistemas de filtros de frecuencia.\\
+
+Además, fue posible contrastar los distintos comportamientos de cada uno de los filtros y verificar según las tablas de resultados obtenidas que la señal efectivamente se ve filtrada a través de la función transferencia que atenúa los valores en las frecuencias que se encuentran fuera del rango que se permite recibir según la frecuencia de corte de cada sistema.\\
+
+Por otro lado, se hizo posible analizar los resultados con respecto a la resonancia del circuito RLC para distintos valores de una resistencia, verificando la naturaleza de oscilador armónico presente en las leyes que modelan este sistema. Gracias a esto se puede notar una considerable concordancia entre el modelo teórico y los resultados experimentales, permitiendo así concluir sobre la consistencia en el comportamiento de este sistema y sus distintas configuraciones de amortiguamiento.
+
+
+
+
+
+
+
+
+
+
+
+
+% FIN DEL DOCUMENTO
+\end{document}

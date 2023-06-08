@@ -1,0 +1,433 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 1}
+\def\temaatratar {Leyes de Ohm y de Kirchhoff}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física\\FI2003-10 Métodos Experimentales}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+Un circuito eléctrico sencillo se compone de una fuente de poder que es la que entrega la energía a este circuito y la resistencia que es la oposición al movimiento de esta energía. El objetivo es familiarizarse con los conceptos básicos de circuitos eléctricos, esto incluye además, conocer los instrumentos con los que se realizan mediciones en los circuitos eléctricos: amperímetro y voltímetro, cuya finalidad es medir el voltaje y la intensidad de corriente respectivamente. 
+
+Como primera experiencia se busca verificar la ley de Ohm, esta ley consiste en el comportamiento lineal del voltaje en función de la intensidad de corriente, esto se hace a través de la medición del voltaje e intensidad de corriente de un circuito eléctrico usando un amperímetro y voltímetro, no obstante, también se hace prescindiendo de estos instrumentos, esto debido a que el software que se usa para simular el circuito (LTspice) cuenta con sus propias herramientas de medición.
+
+La segunda experiencia es verificar la ley de Kirchhoff las cuales consisten en dos leyes. En primer lugar está la ley de corrientes, que dice que las sumas de intensidades de corriente que entran y salen de un nodo del circuito es 0, la cual se verifica a través de la medición del voltaje y la intensidad de corriente de dos circuitos, uno en serie y otro en paralelo. Y por otro lado, la ley de  voltajes que afirma que la suma de las fuerzas electromotrices es igual a las caídas de voltajes (debido a las resistencias).
+
+Durante la realización de ambas experiencias se pudieron comprobar tanto la ley de Ohm como las leyes de Kirchhoff. Además se instruyó sobre la aplicación de instrumentos de medición como el amperímetro y el voltímetro y también se logró familiarizar con conceptos introductorios de circuitos eléctricos.
+
+%Ohmetro culiao quien te conoce
+
+% ley de OHm
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Metodología}
+\subsection{Primera experiencia: Ley de Ohm}
+La primera experiencia parte con la comprobación de la resistencia medida en un circuito eléctrico como el de la figura 1, de un valor $R_{nominal}=10k\Omega$. Para esto, sobre el circuito se reciben las siguientes medidas de corriente y voltaje:
+$$V_0=10,32 \pm 0,005~V$$ $$I_0=1,01\pm0,005~mA$$
+{\textit{El error experimental asignado en cada una se debe a que corresponden a una medición de la cantidad experimental en cuestión, por lo tanto su valor es la mitad de la resolución o sensibilidad del instrumento que se utiliza para medir}}. \\
+La resistencia medida se calcula a través de la ley de Ohm: $$ R_{medido}=\frac{V_0}{I_0}$$
+Para el cálculo de la propagación de errores en el valor medido, se utiliza la siguiente expresión:
+$$R_{medida}\pm \Delta R_{medida}=\frac{V_0}{I_0}\pm \frac{V_0}{I_0}
+\sqrt{\left (\frac{\Delta V_0}{V_0}  \right )^2+\left (\frac{\Delta I_0}{I_0}  \right )^2} $$
+\\
+En la segunda actividad de la experiencia se instala el circuito eléctrico descrito en la figura 1 sin contar los medidores (indicados por A y V) y para medir las magnitudes de intensidad de corriente solo se utilizan las herramientas que proporciona el programa. El circuito al armarse debe estar conformado por una fuente de poder y una resistencia de $10k[\Omega]$ como se observa en la figura 2.
+
+%% FIGURA item a) [circuito de la guía]
+\begin{figure}[H]
+\caption{Diagrama del circuito, $I_0$ representa la corriente medida con el amperímetro $A$ y $V_0$ representa
+el voltaje medido con el voltímetro V , $R_1$ representa la resistencia.}
+\centering
+\includegraphics[width=0.5\textwidth]{img/parte (a).png}
+\end{figure}
+
+%% FIGURA item b) [simplificado y sin medidores]
+\begin{figure}[H]
+\caption{Circuito eléctrico equivalente al de la primera actividad con los medidores removidos formado en LTspice}
+\centering
+\includegraphics[width=0.4\textwidth]{img/parte c y d/circuito_1.png}
+\end{figure}
+\\ \\
+%%%%% ITEM b)
+Luego se procede a medir la corriente y voltaje en el circuito, con cinco valores distintos para la fuente de poder. Estos valores son 4, 6, 8, 10 y 12V. Todo esto se registra en una tabla (tabla 2) que incluye el cociente del voltaje con la corriente, correspondiente a la resistencia medida.
+\\  \\
+
+
+%%%%%% ITEM c) 
+Como tercera parte se repite lo anterior, se arma el circuito de la figura 1 en LTspice, pero esta vez incluyendo los medidores como se indica en la figura 3. Para el amperímetro se escoge como resistencia interna el valor de 1$[\Omega]$ en el programa, este debe ser de un valor pequeño para no disminuir la corriente ni interferir en el circuito cuando se mida. Por otro lado para implementar el voltímetro, se le asigna un valor de $1Mega [\Omega]$ como resistencia interna, el valor debe ser alto para que no interfiera con la corriente que pasa por la resistencia medida. Nuevamente los valores obtenidos se registran en una tabla. (Tabla 3)
+
+\\ \\
+
+\begin{figure}[h]
+\caption{Circuito equivalente al de la primera actividad, incluidos los medidores, formado en LTspice.}
+\centering
+\includegraphics[width=0.6\textwidth]{img/parte c y d/circuito_2.png}
+\end{figure}
+%%%%%%%%%%%
+%Parte e (y d implícitamente)
+%%%%%%%%%%%%%%%%%
+Con los datos recolectados en la tercera parte de la experiencia (correspondientes a la tabla 2) se calcula el promedio y desviación estándar del cociente entre voltaje $V_0$ y corriente $I_0$ medidos sobre la resistencia y se presentan en su respectiva tabla. (Tabla 4) 
+%%%%%%%%%%%%%%%%%%%%%
+%Parte f
+Así se procede a realizar dos gráficos de $V_0$
+en función de la corriente $I_0$, usando los datos de la segunda y tercera parte. Se realiza un ajuste lineal en cada gráfico para verificar que ambos casos cumplan con la ley de Ohm. Se recomienda usar la función polyfit en caso de usar Matlab, Octave o la librería $matplotlib$ de Python en los gráficos.
+%%%%%%%%%%%%%%%%%%%%%%p
+%parte g a la basura xdxd
+%%%%%%%%%%%%%%%%%%%%%%%%55
+\\ \\
+Finalmente, se vuelve al circuito eléctrico con medidores de la figura 2. Se conserva la resistencia interna del amperímetro en 1$[\Omega]$, y se cambian los valores de la resistencia interna del voltímetro con el fin de encontrar cuando pierde valor su medición.
+
+Los valores otorgados a la resistencia interna del voltímetro son: 1000K, 800k,700k, 200k, 100k , 90k y 80k $[\Omega]$.
+
+La pérdida de validez del voltímetro se ve a partir del valor de la resistencia equivalente. Al considerar el voltímetro como una resistencia más se tiene que en el circuito de la figura 3, se comporta como un circuito paralelo, sin considerar el amperímetro:
+$$
+ \frac{1}{R_{eq}}=\frac{1}{R_{nominal}}+\frac{1}{R_v}=\frac{1}{10k}+\frac{1}{R_{v}} & \Rightarrow R_{eq}=10k\left (\frac{R_v}{R_v+10k}  \right )
+$$
+Donde $R_v $ es la resistencia interna del voltímetro y $R_{eq}$ es la resistencia equivalente. 
+
+El voltímetro deja tener validez cuando la resistencia equivalente difiere de la resistencia nominal en más de un 10\%, equivalentemente, $\left (\frac{R_v}{R_v+10k}  \right )<0.9$, equivalente a $\Delta\% R= \left (1-\left (\frac{R_v}{R_v+10k}  \right )\right )*100\%<10\% $.
+
+
+
+
+\subsection{Segunda experiencia: Leyes de Kirchhoff}
+La segunda experiencia parte con escoger tres resistencias de medidas 1k, 5k y 10k $[\Omega]$, respectivamente. Se calcula la resistencia equivalente en serie y en paralelo. Para luego conectar las resistencias en serie y en paralelo en un circuito de LTspice, con una fuente de poder de 12 V, como se observan en las figuras 4 y 5, respectivamente.
+
+Luego se procede a medir la corriente y el voltaje 
+en cada circuito con las herramientas de LTspice,
+para calcular la resistencia medida utilizando la ley
+Ohm. Las resistencias medidas y calculadas se registran
+en una tabla.
+
+Se utilizan en este caso las herramientas de medir de LTspice
+y no un amperímetro y voltímetro, para medir directamente
+la corriente y voltaje, con el fin de que sean lo más precisos posibles.
+\begin{figure}[H]
+\caption{Circuito eléctrico en serie formado en LTspice, $V_1$ representa el voltaje, y $R_1,R_2$ y $R_3$ corresponden a las resistencias.}
+\centering
+\includegraphics[width=0.5\textwidth]{img/parte i y j/circuto en serie.png}
+\end{figure}
+%%%%%%%%%%%%%%%%%%%%
+%Parte j
+%% FIGURA item b) [simplificado y sin medidores]
+\begin{figure}[H]
+\caption{Circuito eléctrico en paralelo formado en LTspice, $V_1$ representa el voltaje, y $R_1,R_2$ y $R_3$ corresponden a las resistencias.}
+\centering
+\includegraphics[width=0.45\textwidth]{img/parte i y j/circuito en paralelo.png}
+\end{figure}
+En la segunda parte se vuelve al circuito de resistencias en serie, como se muestra en la figura 4, y se procede a medir la corriente $I_0$ en el circuito, y el voltaje $V_{R1},V_{R2} $ y $V_{R3}$ sobre las resistencias $R_1, R_2$ y $R_3$ respectivamente. Para medir la corriente se usa un amperímetro con una resistencia interna de 1$[\Omega]$, que se conecta en serie como se indica en la primera imagen de la figura 6. Y para cada resistencia se coloca un voltímetro, de resistencia interna $1 Mega [\Omega]$, que se conecta en paralelo para medir el voltaje como se indican en el segundo, tercer y cuarto paso de la figura 6. La fuente de poder es de 12 V.
+
+
+\begin{figure}[H]
+\caption{Circuito eléctrico de resistencias en serie formado en LTspice, con sus medidores amperímetro y voltímetro.}
+\centering
+\includegraphics[width=0.45\textwidth]{img/parte k/4.png}
+\includegraphics[width=0.45\textwidth]{img/parte k/1.png}
+\includegraphics[width=0.45\textwidth]{img/parte k/2.png}
+\includegraphics[width=0.45\textwidth]{img/parte k/3.png}
+\end{figure}
+En la tercera parte se vuelve al circuito de resistencias en paralelo como se muestra en la figura 5, y se procede a medir el voltaje $V_0$ sobre el circuito, y las corrientes $I_{R1},I_{R2}$ e $I_{R3}$ sobre las resistencias $R_1, R_2$ y $R_3$ respectivamente.
+Para medir el voltaje su usa un voltímetro, de resistencia interna de $1 Mega [\Omega]$, que se conecta en paralelo como aparece en la primera imagen de la figura 7. Para medir la corriente en cada resistencia se usa un amperímetro, de resistencia $1[\Omega]$, que se conecta en serie  como aparecen en la segunda, tercera y cuarta imagen de la figura 7. La fuente de poder es de $12 V$. 
+
+\begin{figure}[H]
+\caption{Circuito eléctrico de resistencias en serie formado en LTspice, con sus medidores  amperímetro y voltímetro.}
+\centering
+\includegraphics[width=0.25\textwidth]{img/parte final/voltímetro.png}
+\includegraphics[width=0.20\textwidth]{img/parte final/ampI1.png}
+\includegraphics[width=0.20\textwidth]{img/parte final/ampI2.png}
+\includegraphics[width=0.20\textwidth]{img/parte final/ampI3.png}
+\end{figure}
+\newpage 
+\section{Resultados}
+\subsection{Primera experiencia: Ley de Ohm}
+A continuación, se presenta el calculo para la resistencia medida en la primera parte,
+$$ R_{medida}=\frac{V}{I}=\frac{10,32 \pm 0,005}{1,01\pm0,005}\left [ 
+\frac{V}{mA}\right ]=10.217,51\pm 50,88 [\Omega] \approx 10.218\pm51[\Omega] $$
+La tabla 1 muestra el valor de la resistencia nominal junto a la resistencia medida y su error de medición.
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+$R_{nominal} [$\Omega$]$ & $R_{medida}[$\Omega$]$    & $\Delta R_{medida}[$\Omega$]$ \\ \hline
+10k     & 10.218  & 51          \\ \hline
+\end{tabular}
+\end{center}{}
+La tabla 2 muestra los resultados de medir el circuito que no posee instrumentos de medición. (Figura 2)
+\begin{center}
+
+ \vspace*{1mm} \\
+\begin{tabular}{|c|c|c|}
+\hline
+$V_0[V]$ & $I_0[mA]$ & $\frac{V_0}{I_0}[k\Omega]$ \\ \hline
+4     & 0,4 & 10             \\ \hline
+6     & 0,6 & 10            \\ \hline
+8     & 0,8 & 10            \\ \hline
+10    & 1   & 10             \\ \hline
+12    & 1,2  & 10            \\ \hline
+\end{tabular}
+\end{center}
+La tabla 3 muestra los resultados de medir el circuito que incluye los instrumentos de medición. (Figura 3)
+\begin{center}
+ \vspace*{1mm} \\
+\begin{tabular}{|c|c|c|}
+\hline
+$V_0[V]$ & $I_0[mA]$ & $\frac{V_0}{I_0}[k\Omega]$ \\ \hline
+4.000   & 0.404  &       9,900             \\ \hline
+5.999   & 0.606   &      9,899             \\ \hline
+7.999   & 0.808   &      9,900             \\ \hline
+9.999   & 1.01    &      9,900             \\ \hline
+11.999  & 1.212  &       9,900                  \\ \hline
+\end{tabular}
+\end{center}
+La tabla 4 muestra el promedio y la desviación estándar del cociente entre voltaje $V_0$ y corriente $I_0$ sobre la resistencia usada en la tabla 2. (Figura 2)
+\begin{center}
+\vspace*{1mm} \\
+\begin{tabular}{|c|c|}
+\hline
+$\langle \frac{V_0}{I_0}\rangle$ & $\sigma$ \\ \hline
+10                               & 0        \\ \hline
+\end{tabular}
+\end{center}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%GRAFICOS%%%%%%%%%%%%%%%%%%%%
+
+% parte (f)
+La figura 8 presenta la proporcionalidad entre voltaje e intensidad de corriente que se observan en el circuito sin medidores
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/graficos f/act_f figura sin medidores.png}
+    
+    \caption{Intensidad en función del Voltaje para el circuito sin medidores.}
+    \label{fig:my_label}
+\end{figure}
+
+A continuación, la figura 9 presenta la proporcionalidad para el mismo circuito pero incluyendo los instrumentos medidores:
+\begin{figure}
+    \centering
+    \includegraphics[width=0.75\textwidth]{img/graficos f/act_f figura con medidores.png}
+    
+    \caption{Intensidad en función del Voltaje para el circuito con medidores.}
+    \label{fig:my_label}
+\end{figure}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+La tabla 7 muestra los valores que toma la resistencia interna del voltímetro y el error porcentual entre la resistencia equivalente y la nominal que conlleva.
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+$R_v [\Omega]$ & $\Delta \% R$ \\ \hline
+1000k          & 0.99\%       \\ \hline
+800k           & 1.23\%       \\ \hline
+200k           & 4.74\%       \\ \hline
+100k           & 9.09\%       \\ \hline
+90k            & 10\%         \\ \hline
+80k            & 11.11\%      \\ \hline
+\end{tabular}
+\end{center}{}
+
+\subsection{Segunda experiencia: Leyes de Kirchhoff}
+A continuación se presentan el desarrollo para las resistencias para los circuitos en serie y en paralelo, de la figura 4 y 5 respectivamente.
+
+Sean $R_1=1k[\Omega]$,$R_2=5k[\Omega]$ y $R_3=10k[\Omega]$.
+\begin{enumerate}
+    \item Resistencias en serie:
+    $$ R_{calculada}=R_1+R_2+R_3=1k+5k+10k [\Omega]=16k [\Omega]$$
+    \item Resistencias en paralelo:
+    $$\frac{1}{R_{calculada}}=\frac{1}{R_1}+\frac{1}{R_2}+\frac{1}{R_3}=\frac{1}{1k}+\frac{1}{5k}+\frac{1}{10k} ~~\left [ \frac{1}{\Omega}   \right ]$$
+    $$ \frac{1}{R_{calculada}}=\frac{13}{10k}\left [ \frac{1}{\Omega}   \right ]\implies R_{calculada}=\frac{10}{13}k [\Omega]$$
+La tabla 8 muestra la comparación entre las resistencias calculadas y medidas de los circuitos de las figuras 4 y 5.
+\end{enumerate}{}
+\begin{center} \vspace*{1mm} \\
+\begin{tabular}{|c|c|c|}
+\hline
+            & $R_{paralelo} [\Omega]$ & $R_{serie} [\Omega]$ \\ \hline
+Calculada   &     $\frac{10}{13} k$     &   $16K$            \\ \hline
+Medida      &     $\frac{10}{13} k$     &   $16K$            \\ \hline
+\end{tabular}\\
+\end{center}
+En la tabla 9 se muestran los resultados de las mediciones de voltaje en cada una de las resistencias y corriente del circuito en serie. (Figura 6) 
+% parte k)
+\begin{center}
+    Comparación para valores medidos con Voltaje $V_{cc}$ de Resistencias en serie
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+         $V_{cc} [V]$ & $V_{R1} [V]$ & $V_{R2} [V]$ & $V_{R3} [V]$ & $I_{0} [mA]$  \\ \hline
+            $12$  & $0.7493$ & $3.7371$ &  $7.4720$ & $0.749$ \\ \hline 
+    \end{tabular}
+\end{center}
+Por la ley de voltajes, se tiene que
+$$V_{cc}=V_{R1}+V_{R2}+V_{R3}=0.7493+3.7371+7.4720 [V]= 11.958 [V]$$
+En la tabla 10 se muestran los resultados de las mediciones de corriente en cada una de las resistencias y voltaje del circuito en serie. (Figura 7) 
+% parte m)
+\begin{center}
+    Comparación para valores medidos con Voltaje $V_{cc}$ de Resistencias en paralelo
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+        $V_{cc} [V]$ & $I_{R1} [A]$ & $I_{R2} [A]$ & $I_{R3} [A]$ & $V_{0} [V]$ \\ \hline
+        $12$ & $0.012$ & $0.002$ & $0.001$ & $$12$$ \\ \hline
+        
+    \end{tabular}
+\end{center}
+De la primera parte, la resistencia equivalente del circuito en paralelo es, $R_{eq}=\frac{10}{13}k[\Omega]$.
+
+Usando este valor para la resistencia equivalente y la ley de Ohm, se puede determinar que la intensidad de corriente del circuito equivale a:
+$$I_0=\frac{V_0}{I_0}=\frac{12 [V]}{\frac{10}{13}k[\Omega]}=0.0156 [A] $$
+Y para verificar la ley de corrientes basta con ver que la suma de las intensidades de corriente medidas experimentalmente en los nodos de las resistencias es idéntico al valor teórico: 
+$$I_0^{*}=I_{R1}+I_{R2}+I_{R3}=0.012+0.002+0.001~~ [A]= 0.0155[A]$$
+En consecuencia, si se suman las medidas de corrientes que entran al sistema y se restan las que salen por los nodos se tiene que:
+$$\sum_{sistema}{I}:=I_0 - I_1 - I_2 - I_3 = (0.0156 - 0.012 - 0.002 - 0.001) [A] = (0.0156 - 0.0155) [A] = 0.0001 [A]$$
+Verificando efectivamente que se cumple la ley de corrientes de Kirchhoff.
+
+
+
+
+\newpage
+\section{Análisis}
+%
+\subsection{Primera experiencia: Ley de Ohm}
+Los resultados obtenidos de la medición realizada en el circuito construido en la actividad b) de la primera experiencia muestran un claro comportamiento lineal, donde el crecimiento de la intensidad de corriente es directamente proporcional al voltaje utilizado en la fuente de poder. \\
+
+Así mismo los resultados obtenidos de la medición realizada del circuito montado como sugiere la actividad d), esta vez con la inclusión de medidores, muestra una clara tendencia lineal a pesar de las interferencias incidentes en el circuito debido a los instrumentos de medición. Se sigue conservando la constante de proporcionalidad con diferencias de orden mínimo por la interferencia de los instrumentos especificada anteriormente. \\
+
+En la actividad siguiente se calcula el promedio y desviación estándar del cociente entre el voltaje ($V_0$) y la intensidad de corriente ($I_0$), se obtiene $10 [k\Omega]$ como promedio y una desviación nula, lo cual es razonable y esperable ya que el cociente se mantiene constante en las mediciones debido a la proporcionalidad directa y el cociente es, de hecho, la constante de proporcionalidad. \\
+
+Posteriormente, en el primer gráfico elaborado para la actividad f) se puede apreciar el gráfico que ilustra el comportamiento del circuito ensamblado en la actividad b) correspondiente al primer circuito, pero simplificado removiendo sus medidores. Es directo notar que la tendencia de los valores sigue la tendencia lineal que se mencionó anteriormente.\\
+
+Continuando con la actividad f), también se confeccionó un gráfico que representa visualmente el comportamiento del circuito armado en la actividad d) que corresponde al primer circuito con los medidores incluidos, el gráfico es idéntico al anterior puesto que los valores obtenidos en esta actividad diferían de los primeros en valores del orden de $10^{-3}$ por lo que la estructura del comportamiento lineal se sigue manteniendo. \\
+
+Al final de la primera experiencia se adjunta una tabla en los resultados que contiene información sobre distintas mediciones hechas para valores diferentes en la resistencia interna de un voltímetro y sus respectivos errores con el fin de afirmar cuando un voltímetro se podría considerar válido, de esta manera se puede ver que el error de medición disminuye a medida que aumenta el valor de la resistencia de manera no lineal. 
+
+\subsection{Segunda experiencia: Leyes de Kirchhoff}
+El primer resultado adjunto en la segunda experiencia corresponde al desarrollo para el cálculo del valor de la resistencia teórica de un circuito conformado por tres resistencias conectadas en paralelo y en serie. \\ A continuación del primer resultado se presenta una tabla donde se comparan los valores teóricos obtenidos a través de la Ley de Ohm con los valores medidos experimentalmente recreando los circuitos LTspice. Los resultados son exactamente equivalentes. \\
+
+En el siguiente resultado se tiene una tabla donde se presentan los resultados obtenidos al medir los voltajes de cada una de las resistencias dado un voltaje $V_{cc}$ fijo para el circuito con las resistencias conectadas en serie. Se puede apreciar en el cálculo que se muestra a continuación que el valor dado por la suma es muy cercano al valor del voltaje del circuito verificando efectivamente la ley de voltajes de Kirchhoff. % En discusión se debe comentar sobre esto, por qué ocurre? Se debe a que las resistencias interfieren? Errores sistemáticos? etc
+
+Finalmente, el último resultado de la segunda experiencia presenta una tabla donde se exponen los resultados obtenidos al medir las intensidades que entran a cada una de las resistencias dado también un voltaje $V_{cc}$ fijo para el circuito con las resistencias dispuestas en paralelo. Se muestra en el cálculo adjunto posteriormente que la suma de la intensidad de corriente que entra al sistema y la resta de las que salen por los nodos es un valor idéntico a $0$. % Por qué no es exactamente 0? (ver en DISCUSIÓN)
+
+
+
+\newpage
+\section{Discusión}
+\subsection{Primera experiencia: Ley de Ohm}
+En la primera parte de la experiencia se comprueba que el valor de la resistencia del circuito de la figura 1 sea de $R_{nominal}=10k [\Omega]$. Esto se hace a partir de las medidas tomadas de la corriente y voltaje que se entregan, esto junto a la ley de Ohm y utilizando propagación de errores, entrega que $R=10.218\pm 51[\Omega]$. El resultado difiere en aproximadamente un 2\% del valor esperado, así se considera que el valor obtenido es plausiblemente aceptable.\\
+
+Luego en la segunda parte se trabajó con el mismo circuito en el programa en LTspice. Variando el voltaje de la fuente de poder, se mide la corriente. Para así calcular el cociente del voltaje con la corriente medidos con el programa, lo cual según la ley de Ohm es el valor de la resistencia del circuito, o sea, $10k[\Omega]$. Lo cual lo hace con una gran exactitud, ya que entrega en cada caso el valor esperado.\\
+
+En la tercera parte, se repite el proceso anterior solo que ahora se le agrega un amperímetro y voltímetro al circuito en LTspice. Como resultado entrega valores un poco más diferidos, respecto la resistencia medida, $\frac{I_0}{V_0}$, la diferencia es solo del orden de las milésimas. Lo cual termina siendo en una diferencia porcentual respecto a la resistencia nominal de aproximadamente un 1\%.\\
+
+Volviendo a la primera parte se calcula el promedio del cociente entre el voltaje y corriente medidos, es decir, resistencia medida según ley de Ohm. El valor de este promedio es exactamente 10k$[\Omega]$, y la desviación estándar es nula. Así se tiene que la ley de Ohm se cumple en este circuito a los distintos tipos de voltaje aplicados.\\
+
+Con los datos medidos del circuito con y sin medidores en la parte anterior, se realiza un gráfico, para cada uno, de $V_0$ en función de la corriente $I_0$. En ambos casos se realiza un ajuste lineal que corresponde a la tendencia que debería seguir si es que cumple con la ley de Ohm. De esto cabe notar que todos los puntos están por sobre la línea tal como se muestra en ambos gráficos. Por lo que en ambos se puede decir que cumplen con la ley.\\
+
+Si es que en las actividades anteriores se reemplazara la resistencia por una ampolleta, la ley de Ohm no se cumpliría ya que una ampolleta necesita más voltaje para pasar corriente entre sus extremos debido a que esta disipa energía. Así, esta no cumple con el comportamiento lineal que se espera de la Ley de Ohm como se puede notar en los gráficos anteriores. Por su composición se dice que tienen un comportamiento cuadrático.\\
+
+Finalmente usando el circuito con los medidores se procede a variar los valores de la resistencia interna del voltímetro con el fin de encontrar una configuración donde el instrumento pierda validez para medir, el amperímetro mantiene su valor respecto a la resistencia interna. En la tabla 7 se observan los diferentes valores que toma la resistencia del voltímetro y el error porcentual que esta conlleva en la resistencia equivalente del sistema respecto a la resistencia nominal. Explicando esto un poco más, al disminuir el valor de la resistencia del voltímetro este colabora en que la resistencia equivalente del circuito aumente con respecto de lo que era al principio (sin medidor), es decir, $10k[\Omega]$. Así, cuando la resistencia es de $90k[\Omega]$ o menos, el error es de mas de un 10\% por lo que se puede decir el instrumento dejaría de ser válido para medir. \\
+
+La importancia de que la resistencia interna sea alta es que el voltímetro no interfiera con la corriente con los valores que registre el amperímetro. Así los valores de corriente que pasen por él deben ser idealmente menores que los valores que pueda registrar el amperímetro.
+
+
+
+
+\subsection{Segunda experiencia: Leyes de Kirchhoff}
+
+Al comienzo de la segunda experiencia se tiene que la resistencia medida es exactamente igual que la resistencia calculada por lo que se vuelve importante notar que debido a que el contexto de estas mediciones se hace en un entorno simulado por software, la probabilidad de que se presenten errores aleatorios en la medición es nula o prácticamente cero. \\ 
+
+Posterior a la primera actividad de la segunda experiencia para verificar la Ley de Voltajes de Kirchhoff se verifica si la suma de los voltajes de cada una de las componentes del circuito es igual al voltaje completo del circuito y se obtienen valores idénticos, sin embargo, no son exactamente iguales. Además para la última actividad de la segunda experiencia se hace un razonamiento análogo para verificar la Ley de Corrientes de Kirchhoff donde se verifica si la intensidad de corriente que ingresa al circuito es igual a la que sale por los nodos donde se obtiene que de la resta para comparar estos valores se consigue un valor muy cercano a $0$ pero que sin embargo es distinto. La razón de este fenómeno se debe a la interferencia que causan los valores de las resistencias internas de los instrumentos de medición en el funcionamiento del circuito, alterando levemente los valores de la medición experimental. Es importante tener esto en cuenta ya que fuera de un entorno simulado estas diferencias en las medidas se pueden presentar en conjunto con otros posibles errores aleatorios, sin embargo, considerando que las Leyes consideran instrumentos de medición ideales es razonable la diferencia que se tiene entre los valores obtenidos pues son de orden muy pequeño y por lo tanto fáciles de detectar y controlar.
+
+\newpage
+\section{Conclusiones}
+
+A través de las actividades realizadas en ambas experiencias se introdujeron conceptos básicos e intuición en relación al funcionamiento de circuitos eléctricos sencillos, también se pudo comprobar experimentalmente tanto la ley de Ohm como las leyes de Kirchhoff y por otro lado, la realización de las experiencias permitió ilustrar acerca del procedimiento para la utilización de instrumentos de medición como el Voltímetro y Amperímetro.
+
+Es de alta importancia notar que algunos de los resultados obtenidos durante las experiencias son poco realistas y muy optimistas (por ejemplo, en la actividad d) $\sigma = 0$) ya que al encontrarse en un ambiente simulado se descartan los posibles errores aleatorios de factores no controlables del entorno del experimento y por lo tanto no aparece dispersión en los datos de las muestras.
+
+Acerca de la herramienta utilizada para la experiencia (LTspice), si bien en su funcionamiento no deja de ser práctico y cumplir con su objetivo, su interfaz es un poco anticuada en estándares actuales del diseño de software por lo que al comienzo puede resultar poco intuitivo y algo abrumador para el usuario.
+
+
+% Y vivieron felices para siempre
+%             FIN 
+% XD
+% ayuda esto no es un meme :c 
+\end{document}

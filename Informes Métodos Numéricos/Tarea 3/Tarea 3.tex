@@ -1,0 +1,234 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 3}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+\renewcommand{\baselinestretch}{1.5} %interlineado
+\setlength{\parindent}{12pt} %sangría
+\setlength{\parskip}{1mm} %salto de párrafos
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Introducción}
+En el presente informe se muestra el desarrollo hecho para la Tarea 3 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. En esta tarea se trata de aprender a implementar OOP (Objected Oriented Programming), de esta forma se utiliza la clase planeta. Con esto, se exploran distintas órbitas para un planeta a través del uso de los métodos de integración de Beeman, Verlet y Runge-Kutta de cuarto orden. Teniendo en cuenta la corrección al potencial gravitacional $U(r)$, 
+$$U(r)=-\frac{GM_{\astrosun}m}{r}+\alpha \frac{GM_\astrosun m}{r^2}$$
+Se integran las ecuaciones de movimiento para 5 órbitas usando los métodos de Runge-Kutta, Verlet y Beemnan para el caso $\alpha=0$. Así se espera observar las diferencias en las órbitas para los distintos métodos, y también para las energías totales. 
+
+Luego, se estudia el caso $\alpha = 10^{-2.742}$ integrando las ecuaciones de movimiento para al menos 30 órbitas utilizando el método de Beeman. Así se grafican estas órbitas y sus energías totales. Con esto se espera ver un movimiento de precesión del afelio, y poder calcular la velocidad de este.
+
+\section{Desarrollo}
+Primero, para encontrar las ecuaciones de movimiento se pasan  de coordenadas polares a coordenadas cartesianas el potencial gravitatorio, y considerando que $GM_{\astrosun}m=1$ tal que $M_{\astrosun}=1/G$ y $m=1$, se tiene:
+$$U(r)=-\frac{GM_{\astrosun}m}{r}+\alpha \frac{GM_\astrosun m}{r^2}=-\frac{1}{r}+\alpha \frac{1}{r^2}=-\frac{1}{\sqrt{x^2+y^2}}+\alpha\frac{1}{x^2+y^2}= U(x,y) $$
+Considerando la energía cinética: $T=\frac{1}{2}m(\dot{x}^2+\dot{y}^2)=\frac{1}{2}(\dot{x^2}+\dot{y^2})$
+. Se puede definir el Lagrangiano del sistema:
+$$ \mathfrak{L} = T-U =\frac{1}{2}(x^2+y^2)+\frac{1}{\sqrt{x^2+y^2}}-\alpha\frac{1}{x^2+y^2} $$
+Luego, con las ecuaciones de Euler-Lagrange se obtienen las ecuaciones de movimiento:
+$$\begin{matrix}
+\frac{\mathrm{d} }{\mathrm{d} t}\frac{\partial \mathfrak{L}}{\partial \dot{x}}-\frac{\partial \mathfrak{L}}{\partial x}=0\Leftrightarrow      \ddot{x}+\frac{x}{(x^2+y^2)^{3/2}}-\alpha\frac{2x}{(x^2+y^2)^2}=0\\ 
+\frac{\mathrm{d} }{\mathrm{d} t}\frac{\partial \mathfrak{L}}{\partial \dot{y}}-\frac{\partial \mathfrak{L}}{\partial y}  =0     \Leftrightarrow \ddot{y}+\frac{y}{(x^2+y^2)^{3/2}}-\alpha\frac{2y}{(x^2+y^2)^2}=0
+\end{matrix}  $$
+Esta es una EDO vectorial de segundo orden que podemos pasar a una EDO vectorial de primer orden:
+$$
+\frac{\mathrm{d} }{\mathrm{d} t}
+\begin{pmatrix}
+x\\ 
+y\\ 
+v_x\\ 
+v_y
+\end{pmatrix}
+=\dot{\vec{X}}=
+\begin{pmatrix}
+v_x\\ 
+v_y\\
+-\frac{x}{(x^2+y^2)^{3/2}}+\alpha\frac{2x}{(x^2+y^2)^2}\\ 
+-\frac{y}{(x^2+y^2)^{3/2}}+\alpha\frac{2y}{(x^2+y^2)^2}
+
+\end{pmatrix}
+=\vec{f}(t,\vec{X})
+$$
+
+donde $v_x=\dot{x}$ y $v_y=\dot{y}$. 
+
+Se utiliza como condición inicial $(x,y,v_x,v_y)=(10,0,0,0.2)$
+
+El cambio de EDO se utiliza para aplicar el método de Runge-Kutta de 4to orden, así el algoritmo a emplear es:
+$$\begin{matrix}
+\vec{k_1}=\vec{f}(t_n,\vec{X_n})\\ 
+\vec{k_2}=\vec{f}(t_n+\frac{1}{2}dt,\vec{X_n}+\frac{1}{2}\vec{k_1}dt)\\ 
+\vec{k_3}=\vec{f}(t_n+\frac{1}{2}dt,\vec{X_n}+\frac{1}{2}\vec{k_2}dt)\\ 
+\vec{k_4}=\vec{f}(t_n+dt,\vec{X_n}+\vec{k_3}dt)
+\end{matrix}$$
+$$\vec{X_{n+1}}=\vec{X_n}+\frac{1}{6}dt(\vec{k_1}+2\vec{k_2}+2\vec{k_3}+\vec{k_4}) $$
+
+Mientras que para el método de Beeman y Verlet se utiliza la EDO vectorial de segundo orden,
+$$\ddot\vec{r}=\begin{pmatrix}
+\ddot{x}\\ 
+\ddot{y}
+\end{pmatrix}
+=
+\begin{pmatrix}
+-\frac{x}{(x^2+y^2)^{3/2}}+\alpha\frac{2x}{(x^2+y^2)^2}\\ 
+-\frac{y}{(x^2+y^2)^{3/2}}+\alpha\frac{2y}{(x^2+y^2)^2} 
+
+\end{pmatrix}
+=\vec{f}(t,\vec{r})      $$
+
+De esta forma, el algoritmo de Beeman aplicado a esta EDO es:
+$$\begin{matrix}
+\vec{r}_{n+1}=\vec{r}_n+dt\cdot\vec{v_n}+(\frac{2}{3}\vec{f}_n-\frac{1}{6}\vec{f}_{n-1})dt^2\\ 
+\vec{v}_{n+1}=\vec{v}_n+\frac{1}{2}(3\vec{f_n}-\vec{f}_{n-1})dt
+\end{matrix} $$
+Mientras que el algoritmo de Verlet para esta EDO es:
+$$ 
+\begin{matrix}
+\vec{r}_{n+1}=2\vec{r}_n-\vec{r}_{n-1}+dt^2\vec{f}_n\\ 
+\vec{v}_{n+1}=\frac{\vec{r}_{n+1}-\vec{r}_n}{dt}
+\end{matrix}$$
+Notemos que para estos dos últimos métodos necesitan dos puntos como condición inicial, pero lo entregado por el enunciado es solamente 
+uno, $\vec{r}_0=(0,0)$. Así, $r_{1}$ se obtiene a través del método de RK4.
+
+Ahora teniendo en cuenta esto, para calcular la velocidad de precesión debemos encontrar los afelios antes. Se sabe que la velocidad angular en el afelio es el mínimo, así lo que se puede hacer para identificarlos es hacer un gráfico velocidad angular versus tiempo y buscar los puntos mínimos de la curva. Sean $\dot{\theta}_n$ estos puntos, deben cumplir que:
+$$ \frac{\dot{\theta}_n-\dot{\theta}_{n-1}}{t_n-t_{n-1}}\cdot \frac{\dot{\theta}_n-\dot{\theta}_{n+1}}{t_n-t_{n+1}} < 0$$
+La velocidad angular se obtiene de la siguiente manera:
+$$\theta=\arctan(\frac{y}{x})\implies \dot\theta=\frac{\dot{x}y-\dot{y}x}{x^2+y^2}\implies \dot\theta_n=\frac{\dot{x}_n y_n-\dot{y}_n x_n}{x_n^2+y_n^2}$$
+
+Además de poder encontrar los afelios, estos se pueden ocupar para saber cuántas órbitas ha hecho el planeta.
+
+
+Finalmente para la energía mecánica total se utiliza:
+$$E= \frac{1}{2}(\dot{x^2}+\dot{y^2})-\frac{1}{\sqrt{x^2+y^2}}+\alpha \frac{1}{x^2+y^2}  \implies E_n =  \frac{1}{2}(\dot{x^2}_n+\dot{y^2}_n)-\frac{1}{\sqrt{x_n^2+y_n^2}}+\alpha \frac{1}{x_n^2+y_n^2}   $$
+
+\newpage
+\section{Resultados}
+\subsection{Parte 1}
+A continuación se muestran los gráficos para las distintas 5 órbitas calculadas con los métodos RK4, Verlet y Beeman, además de los gráficos de las energías totales.
+
+
+\begin{figure}\centering
+\subfloat[Órbitas RK4]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/orbita rk4.pdf}}\hfill
+\subfloat[Energía mecánica RK4]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/energia total rk44.pdf}}\hfill
+
+\caption{En la figura (a) se muestran las 5 órbitas calculadas por el método de integración de RK4. Mientras que en la figura (b) se muestra la energía total del sistema en función del tiempo. }
+\label{RK4}
+\end{figure}
+
+\begin{figure}
+    \centering
+    \subfloat[Órbitas Verlet]{\label{b}\includegraphics[width=.45\linewidth]{Tarea 3/orbita verlet.pdf}}\hfill
+\subfloat[Energía mecánica Verlet]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/energia total verlett.pdf}}\hfill
+\caption{En la figura (a) se muestran las 5 órbitas calculadas por el método de integración de Verlet. Mientras que en la figura (b) se muestra la energía total del sistema en función del tiempo. }
+    \label{Verlet}
+\end{figure}
+\begin{figure}
+    \centering
+    \subfloat[Órbitas Beeman]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/orbita beeman.pdf}}\hfill
+\subfloat[Energía mecánica Beeman]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/energia total beeman.pdf}}\par
+    \caption{En la figura (a) se muestran las 5 órbitas calculadas por el método de integración de Beeman. Mientras que en la figura (b) se muestra la energía total del sistema en función del tiempo.}
+    \label{Beeman}
+\end{figure}
+A continuación, se muestra la velocidad angular para cada momento calculada a partir de RK4.
+
+
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.5\textwidth]{Tarea 3/velocidad angular rk4.pdf}
+    \caption{Gráfico que muestra la velocidad angular calculada después de haber integrado las ecuaciones de movimiento a través del método RK4. Cada punto mínimo corresponde a un Afelio.}
+    \label{graf coordenadas}
+\end{figure}{}
+\subsection{Parte 2}
+A continuación se muestran las órbitas para el caso $\alpha = 10^{-2.742}$ integradas con el método de Beeman. Se dieron 91 órbitas para mostrar bien la precesión. También se muestra un gráfico con la energía total del sistema para cada momento.
+\begin{figure}
+    \centering
+    \subfloat[Órbitas Beeman]{\label{b}\includegraphics[width=.45\linewidth]{Tarea 3/orbitales beeman con alpha no cero.pdf}}\hfill
+\subfloat[Energía mecánica Beeman]{\label{a}\includegraphics[width=.45\linewidth]{Tarea 3/energia total beeman con alpha no cero.pdf}}\hfill
+\caption{En la figura (a) se muestran las 91 órbitas calculadas por el método de integración de Beeman. Mientras que en la figura (b) se muestra la energía total del sistema en función del tiempo.}
+\end{figure}
+Luego, se muestra en un gráfico los ángulos en función del tiempo para cada afelio de las 91 órbitas calculadas anteriormente. La pendiente corresponde a la velocidad angular de precesión, que vale $-2.851 \cdot 10^{-5}$.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.5\textwidth]{Tarea 3/velocidad angular de precesion.pdf}
+    \caption{Gráfico que muestra los ángulos que describen a cada afelio de las 91 órbitas calculadas con el método de Beeman.}
+    \label{vel de precesion}
+\end{figure}{}
+
+\section{Discusión y Conclusiones}
+
+Respecto a la parte 1, se muestra que a simple vista las 5 órbitas calculadas con los distintos métodos no muestran gran diferencia. Las diferencias se observan a precisiones más pequeñas. Por otro lado, en las energías totales se observa una mayor diferencia entre los métodos. Para RK4 la energía oscila en una escala muy pequeña comparada con las otras, por lo que se podría decir que respecto a las otras esta se mantiene casi constante. Para Beeman y Verlet las energías también oscilan, se tiene que Verlet oscila a una escala mayor comparada con Beeman, por lo que se puede notar que Verlet pierde energía de forma más considerable. Cabe notar que las energías totales siempre partieron como negativas, como se pidió en el enunciado.
+
+En la figura 4 se observa como la velocidad angular para cada momento del planeta oscila se forma casi sinusoidal. De esta forma es fácil lograr identificar los afelios ya que corresponde a los puntos de mínima velocidad angular. Así, una forma de contar las órbitas que hace el planeta es contando los afelios que aparecen en este gráfico.
+
+Respecto a la parte 2, para ver bien la precesión se tuvo que dar casi 100 vueltas para que esta se observara bien. En la figura \ref{vel de precesion} se logra observar que el ángulo que describe a los afelios para cada órbita tiene un movimiento claramente lineal, así calcular la velocidad angular de precesión se hace bastante sencilla. Basta con tomar dos puntos y calcular la pendiente entre ellas.
+
+En la figura 5 (b) se muestra como la energía total del sistema va perdiendo energía de manera oscilar a medida que aumenten las órbitas. Esto se puede ver como la pérdida de precisión que tiene el sistema al integrar después de un largo tiempo. 
+
+
+% FIN DEL DOCUMENTO
+\end{document}

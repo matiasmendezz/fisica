@@ -1,0 +1,349 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 3}
+\def\temaatratar {Corriente Alterna}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+Una corriente alterna es una potencia eléctrica que tiene variaciones cíclicas o periódicas en función del tiempo. Este informe busca ayudar a entender como configurar los tipos de señales triangulares, cuadradas y sinusoidales que genera una corriente alterna. \\ \\ En la sesión 3 de laboratorio de Métodos Experimentales se abordan algunos temas sobre corriente alterna con el objetivo de familiarizarse con el uso de LTSpice, entender los principios básicos para diseñar fuentes de voltaje alterno en LTSpice que permitan generar señales triangulares, cuadradas y sinusoidales, familiarizarse con circuitos de corriente alterna y realizar un análisis de circuitos RC y RL.\\ \\
+En la primera experiencia se introduce una pequeña explicación de los parámetros que se ingresan en la fuente y que permiten generar distintas señales de corriente alterna. Posteriormente se generan tres tipos de señales distintas y se verifican los valores utilizados y sus respectivos errores. Al final de la experiencia se hacen algunas prácticas para generar una intuición en como varían las distintas señales según las frecuencias y valores de voltaje.\\ \\
+En la segunda experiencia se arma un circuito RC con el cual se hacen pruebas utilizando corriente alterna y analizando los resultados obtenidos por las señales en las medidas de los distintos componentes del circuito. Se identifican las distintas fases en el proceso de carga y descarga del condensador y se considera la propiedad del tiempo característico del sistema.\\ \\
+En la última experiencia se construye un circuito RL con el que se introduce el manejo de una inductancia y sus parámetros. Posteriormente, se conecta una fuente de corriente alterna con señales cuadradas al circuito y se estudian las mediciones de voltaje en sus componentes, contraponiendo los resultados obtenidos con la forma de la señal emitida por la fuente.\\ \\ Finalmente, también se considera la propiedad del tiempo característico del sistema y se compara con el valor teórico que se debería obtener.
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %%
+% AGREGAR CONCLUSION!!  AGREGAR CONCLUSION!! %%
+%% !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! %%
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+% ======================= INICIO DEL DOCUMENTO =======================
+
+
+\section{Metodología}
+\subsection{Práctica con la fuente de voltaje alterna de LTspice}
+%Partes a y b
+Para la práctica con la fuente de voltaje se pide agregar uno de estos al esquemático para formar un circuito simple que contenga una resistencia de 10 $k\Omega$ como se observa en la figura \ref{circuito para la corriente alterna}.
+\begin{figure}
+    \centering    \includegraphics[width=0.5\textwidth]{Experiencia 1 circuito parte b.png}
+    \caption{circuito simple con una fuente de voltaje alterna}
+    \label{circuito para la corriente alterna}
+\end{figure}
+%Parte c, d y e
+Luego para una señal triangular, cuadrada y sinuosidal se pide variar las frecuencias entre 50 Hz y 2kHz por lo cual se escogieron las frecuencias 100 Hz, 500 Hz, 1 kHz, 1.5 Hz y 2kHz, manteniendo el valor del voltaje peak to peak. Se registra el valor medido por LTspice para el voltaje RMS junto con el error asociado en una tabla y el voltaje RMS nominal. \\ \\
+Como el programa no acepta frecuencias directamente para trabajar se hace la conversión de frecuencia($f$) a período de una señal($T$), con la fórmula $T=\frac{1}{f}$.
+
+En especial, se pide graficar la señales para la frecuencia 500 Hz. Usando los siguientes valores en los parámetros de la fuente de voltaje en LTspice para la señal triangular, cuadrada y sinuosidal respectivamente:
+\begin{center}
+    \begin{tabular}{|c|c|c|c|c|ccc}
+\cline{1-2} \cline{4-5} \cline{7-8}
+\textbf{Parámetro}   & \textbf{Valor} &  & \textbf{Parámetro}   & \textbf{Valor} & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{\textbf{Parámetro}} & \multicolumn{1}{c|}{\textbf{Valor}} \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$V_{initial}{[}V{]}$ & -1             &  & $V_{initial}{[}V{]}$ & -1             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{DC offset {[}V{]}}  & \multicolumn{1}{c|}{0}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$V_{on}{[}V{]}$      & 1              &  & $V_{on}{[}V{]}$      & 1              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Amplitude {[}V{]}}  & \multicolumn{1}{c|}{1}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$t_{delay}{[}s{]}$   & 0              &  & $t_{delay}{[}s{]}$   & 0              & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Freq {[}Hz{]}}      & \multicolumn{1}{c|}{500}            \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$t_{rise}{[}s{]}$    & 0.001          &  & $t_{rise}{[}s{]}$    & 1p             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Tdelay {[}s{]}}     & \multicolumn{1}{c|}{0}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$t_{fall}{[}s{]}$    & 0.001          &  & $t_{fall}{[}s{]}$    & 1p             & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Theta {[}1/s{]}}    & \multicolumn{1}{c|}{0}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$t_{on}{[}s{]}$      & 1p             &  & $t_{on}{[}s{]}$      & 0.001          & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Phi {[}deg{]}}      & \multicolumn{1}{c|}{0}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$t_{period}{[}s{]}$  & 0.002          &  & $t_{period}{[}s{]}$  & 0.002          & \multicolumn{1}{c|}{} & \multicolumn{1}{c|}{Ncycles}            & \multicolumn{1}{c|}{0}              \\ \cline{1-2} \cline{4-5} \cline{7-8} 
+$N_{cycles}$         & 0              &  & $N_{cycles}$         & 0              &                       &                                         &                                     \\ \cline{1-2} \cline{4-5}
+\end{tabular}
+\end{center}
+%Parte f
+%f) La medición del voltaje RMS depende de la frecuencia y de la forma de la señal. Para cada forma,
+%explique en su informe cómo depende la medición con la frecuencia. Indique cuando esta medida
+%es confiable (defina usted un criterio de confiabilidad.)
+%g) Practique generando distintas señales cuadradas y triangulares con distintas frecuencias y valor
+%de voltaje peak to peak. Practique también cambiando el tiempo transiente del gráfico. Observe
+%cómo cambia la señal en la pantalla.
+
+\subsection{Carga y descarga de un condensador}
+%Parte i
+Para la experiencia 2, se pide armar un circuito RC 
+como se aprecia en la figura \ref{circuito rc}. Con la fuente 
+de voltaje alterna se genera una señal cuadrada de 
+1kHz y 2V peak to peak, centrada en 0 V. En el circuito se usan los valores
+R= 10k$\Omega$ y C=10.000 pF.
+
+Se mide la señal entre los puntos a y b, correspondiente al 
+voltaje de la resistencia, y se mide la señal
+entre los puntos b y c, correspondiente al voltaje
+del conductor. 
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{circuito RC.png}
+    \caption{Circuito RC}
+    \label{circuito rc}
+\end{figure}
+Finalmente, se pide estimar el valor del tiempo característico $\tau$ del circuito RC generado por el simulador, y comparar con el que se obtiene teóricamente, $\tau= RC$.
+
+\subsection{Carga y descarga de una inductancia}
+En la experiencia 3 se arma un circuito RL en el que se mide el voltaje en sus componentes. Para obtener esta configuración se realiza el circuito de acuerdo al siguiente esquema:\\
+\begin{figure}
+    \centering
+    \includegraphics[width=0.7\textwidth]{experiencia 3 circuito.png}
+    \caption{Esquemático del circuito RL}
+    \label{fig:exp3_circuito}
+\end{figure}
+\\
+
+Los valores para las configuraciones de las componentes son:\\
+\begin{center}
+\begin{tabular}{|c|c|}
+    \hline
+    $R$ & $1k \Omega$ \\ \hline
+    $L$ & $22mH$ \\ \hline
+    $Series~Resistance$ & $100\Omega$\\ \hline
+\end{tabular}
+\end{center}
+
+De esta manera al hacer correr la fuente con una señal cuadrada a $1kHz$ y con $2V$ de cresta a cresta se pueden obtener las mediciones del voltaje por la resistencia y la inductancia utilizando la punta de prueba del osciloscopio entre los nodos correspondientes a cada componente.
+
+\newpage
+\section{Resultados}
+\subsection{Práctica con la fuente de voltaje alterna}
+En la figura \ref{señal triangular experiencia 1} se muestra la señal triangular generada.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{experiencia 1 voltaje señal triangular 500 Hz.png}
+    \caption{Señal triangular, corresponde al voltaje medido en función del tiempo sobre la resistencia en el circuito de la figura \ref{circuito para la corriente alterna}. }
+    \label{señal triangular experiencia 1}
+\end{figure}
+
+\\
+Valores medidos del voltaje RMS para distintas frecuencias para la señal triangular generada.  
+\begin{center}
+Señal Triangular
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia [Hz]} & \textbf{$V_{rms}$ nominal [V]} & \textbf{$V_{rms}$ simulación [V]} & \textbf{Error Porcentual [\%]} \\ \hline
+            100       &          0.57735                &             0.9307                    &         61.202                 \\ \hline
+            500        &        0.57735                  &                  0.96587               &       67.294                    \\ \hline
+               1k     &         0.57735                    &        0.57543                       &       0.332                    \\ \hline
+                 1.5   &          0.57735                   &            0.57543                   &         0.332                       \\ \hline
+               2k     &           0.57735                  &                0.57543                 &         0.332                       \\ \hline                 
+\end{tabular}
+\end{center}
+
+
+
+En la figura \ref{señal cuadrada experiencia 1} se muestra la señal cuadrada generada.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{experiencia 1 voltaje señal cuadrada 500 Hz.png}
+    \caption{Señal cuadrada, corresponde al voltaje medido en función del tiempo sobre la resistencia del circuito de la figura \ref{circuito para la corriente alterna}. }
+    \label{señal cuadrada experiencia 1}
+\end{figure}
+\begin{center}
+Valores medidos del voltaje RMS para distintas frecuencias para la señal cuadrada generada.
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia [Hz]} & \textbf{$V_{rms}$ nominal [V]} & \textbf{$V_{rms}$ simulación [V]} & \textbf{Error Porcentual [\%]} \\ \hline
+            100       &                      1      &                1               &                0           \\ \hline
+            500        &                   1         &           1                    &                0           \\ \hline
+               1k     &                        1    &          1                     &                  0         \\ \hline
+                 1.5   &                         1   &               1               &                   0        \\ \hline
+               2k     &                         1   &                     1          &                    0       \\ \hline                 
+\end{tabular}
+\end{center}
+
+
+
+En la figura \ref{señal sinuosidakl experiencia 1} se muestra la señal sinusoidal generada.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{experiencia 1 voltaje señal sinusoidal 500 Hz.png}
+    \caption{Señal sinusoidal, corresponde al voltaje medido en función del tiempo sobre la resistencia del circuito de la figura \ref{circuito para la corriente alterna}. }
+    \label{señal sinuosidakl experiencia 1}
+\end{figure}
+\begin{center}
+Valores medidos del voltaje RMS para distintas frecuencias para la señal sinusoidal generada.
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Frecuencia [Hz]} & \textbf{$V_{rms}$ nominal [V]} & \textbf{$V_{rms}$ simulación [V]} & \textbf{Error Porcentual [\%]} \\ \hline
+            100       &                0.70711            &                0.70622        &               0.126            \\ \hline
+            500        &                     0.70711       &               0.70359                 &      0.498                     \\ \hline
+               1k     &                  0.70711          &       0.7023                        &          0.68                 \\ \hline
+                 1.5   &                  0.70711          &        0.70242                       &         0.663                  \\ \hline
+               2k     &                  0.70711          &          0.70242                     &             0.663                       \\ \hline                 
+\end{tabular}
+\end{center}
+
+
+
+\subsection{Carga y descarga de un condensador}
+En la figura \ref{experiencia 2 voltaje resistencia} se muestra el voltaje medido sobre la resistencia del circuito RC. 
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{experiencia 2 voltaje medida resistencia.png}
+    \caption{Curva de voltaje de la resistencia}
+     \label{experiencia 2 voltaje resistencia}
+\end{figure}
+En la figura \ref{experiencia 2 voltaje condensador} se muestra el voltaje medido sobre el condensador del circuito RC.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.6\textwidth]{experiencia 2 voltaje medido condensador.png}
+    \caption{Curva de voltaje del condensador}
+    \label{experiencia 2 voltaje condensador}
+\end{figure}
+El valor del tiempo característico calculado es $\tau=0.105m~[s]$. Mientras que en teoría es $\tau=R\cdot C= 0,1m [s]$. 
+\subsection{Carga y descarga de una inductancia}
+Al medir el voltaje en la resistencia se obtienen las siguientes oscilaciones:
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{exp3_voltaje_R.png}
+    \caption{Curva de voltaje de la resistencia R del circuito RL}
+    \label{fig:exp3_voltaje}
+\end{figure}
+
+Posteriormente la medición obtenida para la inductancia resulta:
+\begin{figure}
+    \centering
+    \includegraphics[width=0.8\textwidth]{exp3_voltaje_L.png}
+    \caption{Curva de voltaje de la inductancia L del circuito RL}
+    \label{fig:exp3_inductancia}
+\end{figure}
+
+El cociente obtenido para la relación $\tau = \frac{L}{R}$ es:
+$$\tau = \frac{22[mH]}{1k[\Omega]} = 22[\mu s] $$
+
+\newpage
+\section{Análisis de resultados}
+\subsection{Práctica con la fuente de voltaje alterna}
+De la experiencia 1, se observa que para generar la señal triangular $t_{rise}$ y $t_{fall}$ deber ser iguales, y con un valor considerable mientras que $t_{on}$ debe ser considerablemente pequeño. Para la señal cuadrada generada ocurre lo contrario, $t_{on}$ debe tener una valor considerable mientras que $t_{rise}$ y $t_{fall}$ son bastantes pequeñas.\\
+EL voltaje RMS varía  dependiendo de la señal generada. El valor del voltaje RMS comparado con el nominal tienen un error porcentual bastante despreciable, excepto
+para dos frecuencias para la señal triangular.
+\subsection{Carga y descarga de un condensador}
+En la experiencia 2, se observa que las curvas de voltaje de la resistencia y condensador son periódicas. En especial, en el condensador se observan dos etapas, en una la curva crece exponencialmente, y mientras que en la otra decrece exponencialmente. El tiempo característico estimado es bastante cercano al tiempo característico nominal.
+
+\subsection{Carga y descarga de una inductancia}
+% Básicamente: explicar lo que pasa en los gráficos xd no irse en la volá %
+
+En el gráfico de la figura \ref{fig:exp3_voltaje} se puede apreciar el comportamiento periódico de las señales cuadradas reflejado en la magnitud del voltaje presente en las resistencias. Se puede diferenciar la fase de carga y descarga de la inductancia a través de la resistencia pues la diferencia de voltaje se neutraliza muy rápidamente correspondiente a los momentos en que el pulso de la señal cuadrada deja de entregar voltaje al sistema.
+
+En el gráfico de la figura \ref{fig:exp3_inductancia} se puede notar también el comportamiento periódico como consecuencia de la presencia de señales cuadradas entregadas por la fuente. Se puede notar que la diferencia entre montes y valles en cada período es de aproximadamente $2V$.
+
+El cociente calculado es el esperado en términos teóricos para un circuito RL.
+
+\newpage
+\section{Discusión}
+\subsection{Práctica con la fuente de voltaje alterna}
+Como se observa en la primera práctica, el tiempo en que se demora la señal triangular en ir su valor máximo al mínimo en voltaje tiene que ser igual q la suma de $t_{rise}$ con $t_{fall}$, es decir, se obtiene el período $t_{period}$ de 0.002 s. Para la señal cuadrada el tiempo que se toma en ir su valor máximo al mínimo tiene que ser idealmente cero, en el simulador este valor toma 1p, terminando con que la suma del tiempo en la que se mantiene en sus valores extremos $t_{on}$, nos tiene que dar el período, $t_{period}$. Y para la señal sinusoidal se usan simplemente 2 valores, la amplitud y frecuencia, en este caso 500 Hz y 1 V debido a que el LTspice se encarga de lo demás. 
+
+Respectos a los voltajes RMS de las distintas fuentes, se observa que sus valores son muy consistentes. Excepto para la señal triangular, cual falla con un más de 50 \% de error entre los valores nominales y simulados para frecuencias pequeñas. En la señal cuadrada los valores nominales y simulados del voltaje RMS son totalmente exactos. Mientras que en la señal sinusoidal estos tienen un error porcentual menor a un 1\%. Por lo que podemos concluir que a una mayor frecuencia es más confiable el valor del voltaje RMS.
+
+
+
+\subsection{Carga y descarga de un condensador}
+Colocar la punta de prueba entre a y b implicó medir la diferencia de voltaje en función del tiempo de la resistencia se observa que este tiene un tiempo de carga y de descarga periódicos. Así el tiempo característico calculado con LTspice fue de 0.105m s, mientras que el ideal es 0.1m s, por lo que la medición es bastante exacta. 
+
+Luego, colocar la punta de prueba entre b y c implicó medir la diferencia de voltaje del condensador. Observándose las dos etapas mencionadas anteriormente, una etapa de carga y descarga con formas de curvas de crecimiento y decrecimiento exponenciales. Observándose que el condensador se carga completamente cada 1m s aproximadamente.
+
+
+\subsection{Carga y descarga de una inductancia}
+Las señales medidas en la figura \ref{fig:exp3_voltaje} representan la diferencia de potencial medida en la resistencia, son directamente consecuencia de los pulsos cuadrados emitidos por la fuente.\\
+\\
+El valor del voltaje en la inductancia no alcanza a ser cero ($-1$ dada la configuración de la fuente centrada en $0V$) al final de cada período porque el decaimiento de la corriente y el voltaje en una inductancia está dado de manera exponencial teniendo así que para que el voltaje alcance el valor mínimo se necesita cumplir con $t\rightarrow\infty$, lo cual debido a los constantes pulsos de la fuente se ve interrumpido, repitiendo el proceso de carga y descarga otra vez, esto es, en otras palabras: $t_{efectivo} \in [0,T[$.
+
+Se puede notar en ambos gráficos que hay un comportamiento periódico con $T = 1.0[ms]$ que se condice con la frecuencia a la que la fuente debe generar señales o pulsos ($F = 1kHz$), de esta manera al ser un circuito RL se tiene que $t=5\tau$ coincide con el momento en que el voltaje de la inductancia deja de variar significativamente y se mantiene en un estado casi constante. Para el caso de la fase de carga en $t=5\tau$ se puede considerar que el valor del voltaje es con buena aproximación el valor $máximo$ que alcanza. De la misma manera para la fase de descarga se puede estimar que el valor que adopte el voltaje será análogamente el $mínimo$. Así, haciendo una estimación con respecto al gráfico se puede diferenciar en un período ($1.0[ms]$) las fases de carga y descarga y también notar que cada una toma como máximo la mitad de un período en realizarse.
+De esta manera, tomando el momento en el que la pendiente de la curva del voltaje se vuelve casi completamente horizontal en el primer período podemos encontrar que un $t'=5\tau$ que corresponde con la condición buscada en el primer período es $112[\mu s]$ con $V_{max} = 0.9[V]$, de esta manera podemos estimar $\tau$ notando que:
+$$112[\mu s] = 5\tau$$
+$$\Rightarrow \frac{112[\mu s]}{5} = \tau$$
+$$22.4 = \tau$$
+Coincidiendo de manera muy cercana al valor obtenido para el cociente teórico conocido para el tiempo característico de un circuito LR.
+\newpage 
+
+\section{Conclusión}
+De la primera experiencia, se logró identificar las distintas caracterizaciones que tienen las señales triangulares, cuadradas y sinusoidales para generarse en el simulador, además de observar como se comportan en un circuito eléctrico. Por lo que se logra familiarizar con LTspice respecto al generar distintos tipos de corriente alterna.
+
+En la segunda experiencia se logra entender como se caracterizan las carga y descargas de un condensador en un circuito RC con una fuente alterna.
+
+Finalmente en la tercera experiencia se caracterizó la carga y descarga de una inductancia en un circuito LR, y se puede apreciar como a pesar de que la diferencia de potencial entregada por la fuente es variable en función del tiempo, las propiedades del tiempo característico del sistema siguen respetándose.
+
+
+
+% FIN DEL DOCUMENTO
+\end{document}

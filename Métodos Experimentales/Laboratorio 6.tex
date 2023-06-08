@@ -1,0 +1,301 @@
+% Template:     Informe/Reporte LaTeX
+% Documento:    Archivo principal
+% Versión:      6.8.2 (11/04/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,11pt]{article} % Articulo tamaño carta, 11pt
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Laboratorio 6}
+\def\temaatratar {Regresión lineal}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Experimentales}
+\def\codigodelcurso {FI2003}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrantes:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno  \\
+		Juanpablo Ignacio Pinto Pérez
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Sergio Godoy M.
+	\end{tabular} \\
+	Auxiliar:
+	& \begin{tabular}[t]{l}
+		Santiago Oñate Robles \\
+		Vicente Sepulveda F.\\
+		Paloma Vildoso P.
+	\end{tabular} \\
+
+	\multicolumn{2}{l}{} \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+
+% CONFIGURACIONES
+\input{lib/config}
+
+% IMPORTACIÓN DE LIBRERÍAS
+\input{lib/env/imports}
+\usepackage{hyperref}
+\usepackage{listings}
+
+% IMPORTACIÓN DE FUNCIONES Y ENTORNOS
+\input{lib/cmd/all}
+
+% IMPORTACIÓN DE ESTILOS
+\input{lib/style/all}
+
+% CONFIGURACIÓN INICIAL DEL DOCUMENTO
+\input{lib/cfg/init}
+
+
+
+% INICIO DE LAS PÁGINAS
+\begin{document}
+	
+% PORTADA
+\input{lib/page/portrait} % Se puede borrar
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\input{lib/cfg/page}
+
+% RESUMEN O ABSTRACT
+\begin{resumen}
+En la teoría de métodos numéricos la \textbf{regresión lineal} es un modelo que permite encontrar una aproximación entre una variable dependiente y una independiente mediante una función lineal.\\
+Este modelo tiene numerosos usos no sólo en el área de las ciencias e ingeniería pero por su naturaleza descriptiva y predictiva es fundamental para el estudio de ciertos fenómenos y el cómo se relacionan los resultados de un experimento con las variables del entorno. \\ \\
+En la presente experiencia de laboratorio y con el objetivo de generar una familiarización con el concepto de regresión lineal se trabaja nuevamente utilizando la aplicación \textit{Phyphox} para estudiar el Espectro de Fourier asociado a las frecuencias normales de oscilación de una cuerda de guitarra y utilizando regresión lineal estimar la velocidad de propagación de las ondas en dicha cuerda. \\ 
+
+
+
+
+
+\end{resumen}
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\input{lib/page/index} % Se puede borrar
+
+% CONFIGURACIONES FINALES
+\input{lib/cfg/final}
+
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Metodología}
+\subsection{Montaje experimental}
+En este laboratorio se debe tener una guitarra acústica, para poder analizar y medir el sonido de una cuerda cuando es pulsada a través de la aplicación \textit{Phyphox}.\\
+
+Una cuerda tiene infinitos modos de oscilación, siendo $n \in \mathrm{N}$ la cantidad de antinodos de oscilación. La frecuencia del modo n-ésimo, estpa dada por, \\
+
+$$f_n=n\frac{c}{2L}$$
+donde $c$ es la velocidad de propagación de las ondas en la cuerda, $L$ la longitud de la cuerda. Pulsando la cuerda se excitan distintos modos. Así se tiene que el sonido emitido contendrá las frecuencias de todos los modos excitados. De este modo, al hace un análisis de Fourier al sonido emitido, podemos medir las frecuencias de los modos excitados, y de esta forma encontrar la velocidad de propagación de las ondas en la cuerda, teniendo medida la longitud de la cuerda.
+
+\subsection{Espectro de Fourier de una cuerda de 
+guitarra}
+Teniendo una guitarra acústica disponible, se abre la aplicación \textit{Phyphox} y con la selección de "Espectro de audio". Se graba el sonido que emite una cuerda de la guitarra tras ser pulsada repetidamente. En \textit{Phyphox} debería aparecer un mapa de calor con líneas verticales blancas como se ve en la figura \ref{Ejemplo lineas blancas en mapa de color}.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=0.3\textwidth]{Laboratorios/Laboratorio 6/ejemplo 1.jpg}
+    \caption{Espectro obtenido en una guitarra acústica.}
+    \label{Ejemplo lineas blancas en mapa de color}
+\end{figure}
+
+Probando con las distintas cuerdas de la guitarra. Se pide describir cómo cambian las frecuencias cuando se usa una cuerda más tensa, gruesa y cuando el sonido es más agudo o grave.\\
+
+Se escoge una configuración en la guitarra que permita encontrar la mayor cantidad posible de modos de oscilación en la cuerda, en este caso se usa la cuerda más delgada. Así con \textit{Phyplox} se muestra el espectro obtenido.\\
+
+En una tabla se colocan todas las frecuencias de oscilación encontradas en el espectro anterior. Para luego graficarlas de forma que $f_n$ está en función de $n$.\\
+
+Con la tabla hecha, se buscan los coeficientes $a$ y $b$ del ajuste linea, llenando los datos como se indica en la tabla \ref{tabla de ejemplo}. Además de calcular el parámetro de regresión lineal $R^2$.\\
+\begin{table}[H]
+\begin{tabular}{cccc}
+\hline
+\multicolumn{1}{|c|}{\textbf{$\sum_{i=1}^N x_i$}} & \multicolumn{1}{c|}{\textbf{$\sum_{i=1}^N y_i$ {[}Hz{]}}} & \multicolumn{1}{c|}{\textbf{$\sum_{i=1}^N x_i y_i$}} & \multicolumn{1}{c|}{\textbf{$\sum_{i=1}^N x_i^2$}} \\ \hline
+\multicolumn{1}{|c|}{}                            & \multicolumn{1}{c|}{}                                     & \multicolumn{1}{c|}{}                                & \multicolumn{1}{c|}{}                              \\ \hline
+                                                  &                                                           &                                                      &                                                    \\ \hline
+\multicolumn{1}{|c|}{\textbf{$x_i = n$}}          & \multicolumn{1}{c|}{\textbf{$y_i = f_n$ {[}Hz{]}}}        & \multicolumn{1}{c|}{\textbf{$x_i y_i$}}              & \multicolumn{1}{c|}{\textbf{$x_i^2$}}              \\ \hline
+\multicolumn{1}{|l|}{}                            & \multicolumn{1}{l|}{}                                     & \multicolumn{1}{l|}{}                                & \multicolumn{1}{l|}{}                              \\ \hline
+\end{tabular}
+\caption{Tabla con datos para el cálculo de $a$ y $b$. }
+\label{tabla de ejemplo}
+\end{table}
+De los coeficientes $a$ y $b$ encontrados, se pide encontrar la velocidad de propagación de las ondas en la cuerda. Además de medir el largo de la cuerda, $L$.\\
+
+La velocidad de propagación se calcula de la siguiente forma,
+$$f_n=n\cdot \frac{c}{2L}\implies c=\frac{(a\cdot n+b)}{n}\cdot 2L=a\cdot 2L+\frac{b\cdot 2L}{n}$$
+Como la cuerda tiene infinitos modos de oscilación, $n \to \infty$
+
+$$  c=a\cdot 2L $$
+
+
+\newpage
+\section{Resultados}
+\subsection{Espectro de Fourier de una cuerda de guitarra}
+En la figura \ref{mapa de calor culiao} se observa el espectro obtenido por \textit{Phyphox}.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.3\textwidth]{Laboratorios/Laboratorio 6/mapa calors.jpg}
+    \caption{Espectro medido para una cuerda pulsada.}
+    \label{mapa de calor culiao}
+\end{figure}
+Para la actividad (d) se obtuvieron las siguientes frecuencias de oscilación:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|} \hline
+         $n$ & $f_n$ [Hz]  \\ \hline
+         $1$ & $351.5625$ \\ \hline
+         $2$ & $703.125$ \\ \hline
+         $3$ & $1406.25$  \\ \hline
+         $4$ & $1406.25$ \\ \hline
+         $5$ & $1757.8125$ \\ \hline
+         $6$ & $2109.375$ \\ \hline
+         $7$ & $2437.5$ \\ \hline
+         $8$ & $2812.5$ \\ \hline
+         $9$ & $3164.0625$ \\ \hline
+         $10$ & $3515.625$ \\ \hline
+         $11$ & $3867.1875$ \\ \hline
+         $12$ & $4218.75$ \\ \hline
+         $13$ & $4570.3125$ \\ \hline
+         $14$ & $4921.875$ \\ \hline
+         $15$ & $5296.875$ \\ \hline
+         $16$ & $5648.4375$ \\ \hline
+    \end{tabular}
+    \caption{Reporte de las frecuencias de oscilación de los modos de la cuerda}
+    \label{tab:(d)}
+\end{table}
+
+Posteriormente al graficar las frecuencias obtenidas de la tabla \ref{tab:(d)} se obtiene la figura \ref{fig:(e)}:
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.45]{Laboratorios/Laboratorio 6/grafico 1.png}
+    \caption{Gráfico de frecuencias de oscilación en función de los anti-nodos}
+    \label{fig:(e)}
+\end{figure}
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|} \hline
+         $x_i = n$ & $y_i = f_n$ [Hz] & $x_i y_i$ & $x_i^2$  \\ \hline
+         $1$ & $351.5625$ & $351.5625$ & $1$\\ \hline
+         $2$ & $703.125$ & $1406.25$ & $4$ \\ \hline
+         $3$ & $1406.25$ & $3164.063$ & $9$ \\ \hline
+         $4$ & $1406.25$ & $5625$ & $16$ \\ \hline
+         $5$ & $1757.8125$ & $8789.0625$  & $25$  \\ \hline
+         $6$ & $2109.375$ & $12656.25$ & $36$ \\ \hline
+         $7$ & $2437.5$ & $17062.5$ & $49$ \\ \hline
+         $8$ & $2812.5$ & $22500$ & $64$ \\ \hline
+         $9$ & $3164.0625$ & $28476.5625$ & $81$ \\ \hline
+         $10$ & $3515.625$ & $35156,25$ & $100$ \\ \hline
+         $11$ & $3867.1875$ & $42539.0625$ & $121$ \\ \hline
+         $12$ & $4218.75$ & $50625$ & $144$ \\ \hline
+         $13$ & $4570.3125$ & $59414.0625$ & $169$ \\ \hline
+         $14$ & $4921.875$ & $68906.25$ & $196$ \\ \hline
+         $15$ & $5296.875$ & $79453.125$ & $225$ \\ \hline
+         $16$ & $5648.4375$ & $90375$ & $256$ \\ \hline
+    \end{tabular}
+    \caption{Tabla de resultados para determinar el modelo lineal}
+    \label{tab:(f)-1}
+\end{table}
+
+\\
+Así se obtienen los siguientes términos que se utilizan para determinar los coeficientes asociados a la regresión lineal \\
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|} \hline
+        $\sum_{i=1}^N x_i$ & $\sum_{i=1}^N y_i$ [Hz] & $\sum_{i=1}^N x_i y_i$ & $\sum_{i=1}^N x_i^2$ \\ \hline
+        $136$ & $47835.9375$ & $526500$ & $1496$ \\ \hline
+    \end{tabular}
+    \caption{Términos para el cálculo de $a$ y $b$, parámetros del modelo lineal}
+    \label{tab:(f)-2}
+\end{table}
+
+Así, los coeficientes obtenidos (incluyendo el coeficiente de regresión) son:
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|} \hline
+         $a$ & $b$ & $R^2$ \\ \hline
+         $352.631$ & $-7.617$ & $0.999$ \\ \hline
+    \end{tabular}
+    \caption{Coeficientes obtenidos para el modelo lineal}
+    \label{tab:(f)-3}
+\end{table}
+    
+Queda finalmente que el modelo lineal es:
+$$f(n)=f_n = 352.631\cdot n - 7.617$$
+\\
+
+Agregando el gráfico del modelo lineal al conjunto de datos medidos resulta el siguiente gráfico:
+\begin{figure}
+    \centering
+    \includegraphics[scale=0.5]{Laboratorios/Laboratorio 6/grafico 2.png}
+    \caption{Gráfico de frecuencias de oscilación en función de los anti-nodos (set de datos y modelo lineal)}
+    \label{fig:(g)}
+\end{figure}
+
+Usando que el largo de la cuerda utilizada es de $L=65$[cm] se obtiene que la velocidad de propagación de las ondas en dicha cuerda corresponde a $v=458.420 [\frac{m}{s}]$.
+
+\newpage\section{Análisis}
+\subsection{Espectro de Fourier de una cuerda de guitarra}
+En los resultados obtenidos para las frecuencias de oscilación del espectro de Fourier según la tabla \ref{tab:(d)}, se puede notar que el comportamiento de las frecuencias va consistentemente lineal con respecto a $n$. \\
+
+Para la figura \ref{fig:(e)} se refleja lo anterior, mostrando que los puntos crecen de manera uniforme y bosquejan puntos de la recta correspondiente a una función lineal. \\
+
+La tabla \ref{tab:(f)-1} agrega dos columnas a los resultados de la tabla \ref{tab:(d)}. El crecimiento de la columna $x_i y_i$ también tiene un comportamiento relativo a la linealidad obtenida sobre los valores de $f_n$. \\
+
+Los términos o componentes obtenidos en la tabla \ref{tab:(f)-2} son autodescriptivos, permiten calcular los coeficientes de la tabla \ref{tab:(f)-3}. \\
+
+Se obtiene un coeficiente de regresión lineal $R^2 = 0.999$.\\
+
+Para el gráfico de la figura \ref{fig:(g)} se grafican en conjunto el set de datos experimentales y el modelo lineal se ve que coinciden casi totalmente, algunos puntos no están completamente centrados en la recta y poseen un offset menor. \\
+
+Finalmente se obtiene una velocidad de $458.420 [\frac{m}{s}]$, como referencia, una onda de sonido se propaga por el aire a $340[\frac{m}{s}]$ aproximadamente, por lo tanto y como es esperable de un medio material más denso que el aire las ondas en la cuerda se desplazan a una mayor velocidad. 
+
+\newpage\section{Discusión}
+\subsection{Espectro de Fourier de una cuerda de guitarra}
+Del sonido de las cuerdas pulsadas, se obtiene que las frecuencias de oscilación, tabla \ref{tab:(d)}, medidas a través de \textit{Phyphox}, tienen un claro comportamiento lineal al estar en función de $n$, número de anti-nodos.\\
+
+Se pudo observar que a para cuerdas con sonidos más graves se podían notar muchas más lineas en el mapa de color asociado al espectro, contrariamente, para sonidos más agudos aparecía una menor densidad de lineas en el mapa de color. \\
+
+Así al tener un comportamiento lineal, se puede encontrar un ajuste lineal para $f_n$, con los datos de la tabla 4 se obtiene que:
+
+$$f_n=354.631\cdot n-7.617$$
+
+A través del coeficiente de regresión lineal $R^2$, se tiene que el modelo lineal es un muy buen ajuste al ser $R^2=0.999\approx 1$. \\
+
+Para comprobar esto, se coloca el set datos y el modelo lineal en un mismo gráfico como se observa en la figura \ref{fig:(g)}. Se ve que la recta calza con los datos de manera muy precisa.
+
+
+\newpage \section{Conclusión}
+Al analizar y medir frecuencias de oscilación de una cuerda a través de \textit{Phyphox}, se logró familiarizarse con el uso de la regresión lineal. Aplicado en este caso al uso de las frecuencias de oscilación de la cuerda en función de su anti-nodo. Esto terminó mostrando que tienen un comportamiento lineal bastante claro. Además de lograr conseguir medir la velocidad de propagación de ondas en la cuerda con estos datos.
+
+
+
+
+
+
+\end{document}

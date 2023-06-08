@@ -1,0 +1,171 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 6}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Matías Méndez Zenteno}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+\templateIndex
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Introducción}
+En el presente informe se muestra el desarrollo hecho para el problema 2 de la Tarea 6 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. Se entrega un segmento del espectro de una fuente astronómica con una leve pendiente y una línea de absorción. El objetivo de esta tarea es modelar de manera simultánea el continuo con inclinación y la línea de absorción. Estos datos se encuentran en el archivo \textbf{espectro.dat}. En la figura \ref{espectro observado} se muestra el espectro observado.
+
+\\ \\
+Para modelar este espectro se asume que el mecanismo de ensanchamiento que produce la línea de absorción son con línea gausseanas. De esta forma, el modelo a utilizar es la combinación de una línea recta para el continuo junto a función gaussiana para la absorción. De esta forma se tienen cinco parámetros a modelar. Los métodos a utilizar para encontrar estos parámetros son el método de mínimos cuadrados de \textbf{lmfit} y de \textbf{scipy} el método curve\_fit.
+\\ \\
+
+Así, como resultados se entregan un gráfico con el espectro observado junto al mejor fit observado. Se entrega una tabla con los mejores parámetros obtenidos y su error estándar. Además de reportar el valor de $\chi^2_{reducido}$ en su mínimo.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.8\textwidth]{Tarea 6/Grafico datos.pdf}
+    \caption{Espectro observado, a estos datos se le busca un modelo que lo describa como objetivo de la tarea.}
+    \label{espectro observado}
+\end{figure}{}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%% FIN INTRODUCCION %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Desarrollo}
+El modelo a utilizar en el espectro corresponde a la función:
+$$y = a_1+ a_2\cdot x+ a_3\cdot e^{\frac{-(x-a_4)^2}{a_5^2}}$$
+Donde $a_1, a_2, a_3, a_4$ y $a_5$ son los parámetros a encontrar.
+\\ \\
+Para esto, se utiliza el método de mínimo cuadrados que trata de encontrar los parámetros que minimizan la función
+$$ \underset{\{a_1,~a_2,~a_3,~a_4,~a_5 \}}{min}\sum ^{N}_{i=1}(y_i-y(x_i;a_1,~a_2,~a_3,~a_4,~a_5 ))$$
+Donde $y_i$ corresponde al dato i-ésimo obtenido e $y(x_i;a_1,~a_2,~a_3,~a_4,~a_5)$ al valor i-ésimo del modelo propuesto.
+\\ \\
+Para hacer esto se utiliza la librería lmfit que tiene este método de mínimo cuadrados, pero el problema es que requiere de los errores de medición de los datos. Los cuales no son entregados en el enunciado. Por lo tanto, lo que se hace es asumir un error constante para cada dato del espectro observado, y el calculo de este se hace de la siguiente forma:
+\begin{itemize}
+    \item Se toma un pedazo del espectro que no esté afectado por la línea de absorción. De esta forma se toman los datos entre 6460.0 $[\AA]$ hasta 6550.7 $[\AA]$.
+    \item Se modela una línea recta que describan estos datos. Para esto se utiliza el modelo $y=a_1+a_2 \cdot x$ y se utiliza el método de mínimo cuadrados de curve\_fit de scipy para encontrar los parámetros $a_1$ y $a_2$. 
+    \item Teniendo esto, se asume que el motivo de que los datos suban y bajen sobre la línea es el ruido de medición. Así, se calcula la incertidumbre para cada dato de la forma: $error = y_{real}-y_{modelo}$ y se guarda en un arreglo llamado errores.
+    \item Ordenando los valores del arreglo errores en un histogramas estos deberían tener un comportamiento gaussiano al tratarse de observaciones astronómica. Así, se logra estimar el valor de su desviación estándar, $\sigma$. Luego, este valor se asume constante y se utiliza como el error para cada punto del espectro.
+\end{itemize}
+Así, teniendo los errores de medición del espectro observado, se procede a utilizar el método de mínimo cuadrados de la librería lmfit. Para esto se tiene que tiene que definir la función residuo en python que corresponde a la función: $\frac{y_{real}-y_{modelo}}{y_{err}}$. Donde $y_{rea}$ corresponde al valor del dato obtenido, $y_{modelo}$ al valor (modelo) que se debería haber obtenido realmente, e $y_{err}$ corresponde al error de medición de este, que en verdad corresponde a $\sigma$.\\ \\
+La librería lmfit recibe los parámetros iniciales a través de Parameters(), estos parámetros iniciales se estiman con una simple inspección del espectro observado, del cual se hace la siguiente deducción: para los parámetros de la recta, se tiene que esta debería tener una pendiente muy pequeña ya que el espectro está casi horizontal, así $a_2 = 0.01$ mientras que el coeficiente de posición $a_1$ corresponde simplemente a la altura que se encuentra el gráfico aproximadamente, así $a_1 = 1.2$. Mientras que en los parámetros de la gaussiana se observa que $a_3$ corresponde a la amplitud de esta, la cual dejamos con un valor de 1 por mientras, $a_4$ corresponde a la posición donde se va encontrar el peak de la campana de gauss, así observando el espectro se dice que $a_4 = 6565$, y finalmente $a_5$ corresponde al ensanchamiento de la campana de gauss, observando el gráfico se ve que esta es aproximadamente 10 $\AA$, así $a_5 = 10$. 
+\\ \\
+Luego de tener los parámetros iniciales, se realiza la búsqueda de estos parámetros para lo que se utiliza la función minimice de lmfit que recibe la función residuo definida junto a los datos del espectro y su error de medición estimada. De esta manera, ya calculados los parámetros por la función para tener un reporte de estos, se utiliza la función report\_fit. Que nos entrega los valores de los parámetros junto a su desviación estándar además de otros valores, como el de $\chi^2$ reducido. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% FIN DESARROLLO %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+\section{Resultados}
+A continuación, en la figura \ref{recta} se muestra el fiteo de una recta para un pedazo del espectro que no estuviese afectado por la línea de absorción. Como se indico antes, esto se hace para tener una idea del error de medición de los datos.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.55\textwidth]{Tarea 6/Grafico recta en espectro.pdf}
+    \caption{En el gráfico se observa los datos del espectro junto a una recta que describe los datos entre 6460.0 $[\AA]$ hasta 6550.7 $[\AA]$.}
+    \label{recta}
+\end{figure}{}
+En la figura \ref{histograma} se muestra un histograma con las diferencias entre el modelo del pedazo del espectro que no está afectado por la línea de absorción y el espectro.  
+
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.55\textwidth]{Tarea 6/Histograma.pdf}
+    \caption{En el gráfico se observa como los valores que corresponde a los errores de medición, están centrados en cero. Esto datos corresponde a la observación entre 6460.0 $[\AA]$ y 6550.7 $[\AA]$.}
+    \label{histograma}
+\end{figure}{}
+El valor de $\sigma $calculado es 6.012839265154404e-19. 
+\\ \\
+En la tabla se muestran los valores calculados para los parámetros de la función modelo al utilizar el método de mínimo cuadrados de lmfit. 
+\begin{table}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+\textbf{Parámetros}          & \textbf{$a_1$} & \textbf{$a_2$} & \textbf{$a_3$} & \textbf{$a_4$} & \textbf{$a_5$} \\ \hline
+\textbf{Valor}               & 8.876e-17      & 7.8026e-21     & -1.0068e-17    & 6563.22332     & 4.60781481     \\ \hline
+\textbf{Desviación estándar} & 6.818e-18      & 1.0395e-21     & 4.3879e-19     & 0.163211       & 0.23426078     \\ \hline
+\end{tabular}
+\end{table}
+El valor de $\chi^2$ reducido según lo entregado es aproximadamente 1.23.
+\\ \\ 
+Finalmente, en la figura \ref{fiteo} se muestra el fiteo del modelo con los parámetros calculados junto al espectro observado. 
+
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{Tarea 6/Grafico fiteo espectro.pdf}
+    \caption{Se observa en el gráfico el espectro observado junto al modelo con los parámetros calculados por el método de mínimos cuadrado de la librería lmfit.}
+    \label{fiteo}
+\end{figure}{}
+
+%%%%%%%%%%%%%%%%%%% FIN RESULTADOS %%%%%%%%%%%%%%%%%
+\newpage
+\section{Discusión y Conclusiones}
+Respecto a la estimación de la recta para el pedazo del espectro que no es afectado por la línea de absorción, se observa que el error de este, representado en la figura 3, tiene un comportamiento gaussiano y esta centrado en 0 a pesar de no ser tantos puntos. Por lo que la suposición de que el error de medición es gaussiano es correcta.
+\\ \\
+Luego, al tener calculado así $\sigma$ este se usa como un error constante para todo el espectro, con esto se pudo obtener el fiteo de la curva modelo que representa al espectro. Observando la figura 4, se observa que el modelo es bastante parecido al espectro. Con esto, se tiene que los parámetros iniciales son bien utilizados para que el algoritmo de mínimos cuadrados de lmfit convergiera. 
+\\ \\
+Se tiene que $\chi^2$ reducido es 1.23 lo cual es un valor muy cercano a 1. Por lo que se puede decir por este lado también que el cálculo de los parámetros está bien hecho. Así se puede establecer finalmente que se aplicaron bien los métodos de mínimos cuadrados de las librerías scipy y lmfit.
+
+
+
+% FIN DEL DOCUMENTO
+\end{document}

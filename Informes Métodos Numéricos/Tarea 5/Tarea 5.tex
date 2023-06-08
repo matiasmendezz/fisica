@@ -1,0 +1,159 @@
+% Template:     Informe LaTeX
+% Documento:    Archivo principal
+% Versión:      7.0.3 (02/08/2020)
+% Codificación: UTF-8
+%
+% Autor: Pablo Pizarro R.
+%        Facultad de Ciencias Físicas y Matemáticas
+%        Universidad de Chile
+%        pablo@ppizarror.com
+%
+% Manual template: [https://latex.ppizarror.com/informe]
+% Licencia MIT:    [https://opensource.org/licenses/MIT]
+
+% CREACIÓN DEL DOCUMENTO
+\documentclass[letterpaper,oneside]{article}
+
+% INFORMACIÓN DEL DOCUMENTO
+\def\titulodelinforme {Tarea 5}
+\def\temaatratar {Métodos Numéricos para la Ciencia e Ingeniería}
+
+\def\autordeldocumento {Nombre del autor}
+\def\nombredelcurso {Métodos Numéricos para la Ciencia e Ingeniería }
+\def\codigodelcurso {FI3104}
+
+\def\nombreuniversidad {Universidad de Chile}
+\def\nombrefacultad {Facultad de Ciencias Físicas y Matemáticas}
+\def\departamentouniversidad {Departamento de Física}
+\def\imagendepartamento {departamentos/dfi}
+\def\imagendepartamentoescala {0.2}
+\def\localizacionuniversidad {Santiago, Chile}
+
+% INTEGRANTES, PROFESORES Y FECHAS
+\def\tablaintegrantes {
+\begin{tabular}{ll}
+	Integrante:
+	& \begin{tabular}[t]{l}
+		Matías Méndez Zenteno
+	\end{tabular} \\
+	Profesor:
+	& \begin{tabular}[t]{l}
+		Valentino González C.
+	\end{tabular} \\
+	Auxiliares:
+	& \begin{tabular}[t]{l}
+		Vicente Donaire Aguilera\\
+		Benjamín Navarrete
+	\end{tabular} \\
+
+	
+ \\
+	& \\
+	\multicolumn{2}{l}{Fecha de realización: \today} \\
+	\multicolumn{2}{l}{Fecha de entrega: \today} \\
+	\multicolumn{2}{l}{\localizacionuniversidad}
+\end{tabular}}{
+}
+
+% IMPORTACIÓN DEL TEMPLATE
+\input{template}
+
+% INICIO DE PÁGINAS
+\begin{document}
+	
+% PORTADA
+\templatePortrait
+
+% CONFIGURACIÓN DE PÁGINA Y ENCABEZADOS
+\templatePagecfg
+
+% RESUMEN O ABSTRACT
+
+
+% TABLA DE CONTENIDOS - ÍNDICE
+
+
+% CONFIGURACIONES FINALES
+\templateFinalcfg
+
+% ======================= INICIO DEL DOCUMENTO =======================
+\section{Introducción }
+En el presente informe se muestra el desarrollo hecho para el problema 1 de la Tarea 4 del curso \textit{Métodos Numéricos para la Ciencia e Ingeniería}. El objetivo en esta tarea es utilizar el método de integración de Monte Carlos en N-dimensiones para estimar la posición del centro de masa de un sólido descrito por la intersección de un toro y cilindro de ecuaciones respectivas:
+$${\rm Toro} : z^2 + \left( \sqrt{x^2 + y^2} - 3 \right)^2 &\leq 1 $$
+$${\rm Cilindro} : (x - 2)^2 + z^2 &\leq 1 $$
+$${\rm Densidad} : \rho(x, y, z) = 0.5 \times (x^2 + y^2 + z^2) $$
+Así, para la integración se necesita un volumen que encierre el sólido. Para ello se define la caja más pequeño que sirva para encerrarlo. \\
+
+Finalmente para estimar la incertidumbre de la integración debido al comportamiento aleatorio de este. Se repite el cálculo del centro de masa 100 veces para obtener un valor promedio y su desviación estándar. Se estudia el comportamiento de la incertidumbre a medida que aumenta el número de puntos utilizados para la estimación del centro de masa.
+
+
+\newpage
+\section{Desarrollo}
+Primero, se necesita encontrar la caja que encierre al sólido. Para ello se observa el gráfico del toro y el cilindro como se observa en la figura \ref{toro_cilindro }, y con ello se trata de encontrar la caja más pequeña que sirva. De esto se saca que la caja es de $8 \times 8 \times 2$.
+\begin{figure}
+    \centering    
+    \includegraphics[width=0.7\textwidth]{Tarea 5/Grafico toro-cilindro.png}
+    \caption{Gráfico del toro y cilindro. El sólido al que se le calcula su centro de  masa corresponde a la intersección de estas dos figuras.}
+    \label{toro_cilindro }
+\end{figure}{}
+El cálculo del centro de masas corresponde a calcular las siguientes cuatro integrales :
+$$ m = \int \rho(x,y,z)dxdydz;~ 
+x_{cm} = \frac{\displaystyle \int x\cdot\rho(x,y,z)dxdydz}{m} ;~
+y_{cm} = \frac{\displaystyle \int y\cdot\rho(x,y,z)dxdydz}{m} ;~
+z_{cm} = \frac{\displaystyle \int z\cdot\rho(x,y,z)dxdydz}{m}$$
+La zona de integración es la intersección del toro y cilindro. Así, para calcular estas integrales se usa el método de integración de Monte Carlos:
+$$\int f(x,y,z) dV \approx V\left \langle f  \right  \rangle  \pm V  \sqrt{\frac{\left \langle f^2  \right \rangle -\left \langle f  \right  \rangle ^2}{N}} $$
+con,
+$$ \left \langle f \right \rangle = \frac{1}{N} \sum f_i~~;~~\left \langle f^2 \right \rangle = \frac{1}{N} \sum f_i^2 $$
+donde N corresponde a la cantidad de puntos utilizados para estimar el centro de masa. Estos puntos se generan con una distribución uniforme por eje, así en el eje x se forman N puntos de forma aleatoria entre -4 y 4, en y entre -4 y 4, y en el eje z entre -1 y 1. Esto corresponde a generar tuplas (x,y,z) correspondientes a puntos dentro de la caja definida anteriormente. \\
+
+De esta forma. en las sumatorias, la evaluación de  las funciones $f_i$ solo ocurre si el punto está dentro de la intersección del toro con el cilindro. 
+
+Finalmente, el calculo del centro de masa se repite 100 veces por cada N utilizado, y con ello se entrega el promedio de este y su desviación estándar. En este caso se utilizan N = 100, 500, 1.000, 2.000, 3.000, 4.000, 5.000, 10.000, 20.000, 30.000, 40.000,  50.000, 100.000, 500.000. 
+
+
+
+\section{Resultados}
+En la tabla 1 se muestra los valores promedios obtenidos para la masa y coordenadas del centro de masa del sólido para los valores más relevantes de N. 
+\begin{table}
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{N} & \textbf{m} & \multicolumn{1}{l|}{\textbf{$X_{cm}$}} & \multicolumn{1}{l|}{\textbf{$Y_{cm}$}} & \multicolumn{1}{l|}{\textbf{$Z_{cm}$}} \\ \hline
+100        & 70.318     & 2.088                                  & -0.018                                 & -0.002                                 \\ \hline
+1.000      & 71.148     & 2.081                                  & 0.006                                  & -0.001                                 \\ \hline
+5.000      & 70.914     & 2.079                                  & -0.005                                 & -0.000                                 \\ \hline
+10.000     & 71.0463    & 2.080                                  & 0.004                                  & 0.001                                  \\ \hline
+50.000     & 71.001     & 2.080                                  & 0.000                                  & 0.000                                  \\ \hline
+100.000    & 70.953     & 2.080                                  & 0.000                                  & 0.000                                  \\ \hline
+500.000    & 70.979     & 2.080                                  & 0.000                                  & 0.000                                  \\ \hline
+
+\end{tabular}
+\caption{Tabla con los promedios para la masa y las coordenadas del centro de masa luego de haber repetido el calculo 1000 veces.}
+\end{table}
+
+En la figura \ref{grafico errores} se muestran los gráficos de las desviaciones estándar para las coordenadas del centro de masa en función de la cantidad de puntos utilizados para la estimación  del centro de masa.
+
+\begin{figure}\centering
+\subfloat[Gráfico de desviación estándar de $x_{cm}$]{\label{a}\includegraphics[width=0.5\linewidth]{Tarea 5/desv est en x.pdf}}\hfill
+\subfloat[Gráfico de desviación estándar de $y_{cm}$]{\label{b}\includegraphics[width=.5\linewidth]{Tarea 5/desv est en y.pdf}}\par
+\subfloat[Gráfico de desviación estándar de $z_{cm}$]{\label{a}\includegraphics[width=.5\linewidth]{Tarea 5/desv est en z.pdf}}\hfill
+\subfloat[Gráfico $1/\sqrt(N)$ de referencia]{\label{a}\includegraphics[width=.5\linewidth]{Tarea 5/graf curva 1_sqrt(N).pdf}}\hfill
+\caption{}
+\label{grafico errores}
+\end{figure}
+
+
+
+
+
+\newpage
+\section{Discusión y Conclusiones}
+Respecto al cálculo de las integrales se observa que el valor de estas llegan a tener una precisión de dos decimales cuando se llega a usar 500.000 puntos. Esto se puede deber a que la ventaja de este método no es la precisión sino que la simplicidad de su implementación.
+
+Así de esta forma se obtiene que el centro de masa del sólido es aproximadamente (2.080, 0.000, 0.000). 
+
+Con respecto a la incertidumbre de los cálculos, se repitió el experimento mil veces por cada N y de acá se obtuvo la desviación estándar de esa medición. Para que esto estuviera correcto, se tiene que la desviación estándar debe tener un comportamiento tipo $1/\sqrt(N)$ a medida que aumenta N para que coincidiera con la ecuación de Monte Carlos. Así, observando la figura 2 se muestra que las desviaciones estándar se comportan de esta manera para cada coordenada del centro de masa al comparar con el gráfico (d) de la figura. Por lo tanto, se puede establecer que se implementó de forma correcta el método de Monte Carlo para determinar el centro de masa del sólido. 
+
+
+% FIN DEL DOCUMENTO
+\end{document}
